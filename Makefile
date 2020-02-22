@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 15:04:16 by ldevelle          #+#    #+#              #
-#    Updated: 2020/02/22 19:18:41 by ldevelle         ###   ########.fr        #
+#    Updated: 2020/02/22 19:50:29 by ldevelle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -247,6 +247,9 @@ $(DIR_OBJ) :
 t	:	all
 		$(CC) $(CFLAGS) -I$(HEAD_DIR) $(NAME) main.c -o $(TESTEUR)
 		$(VALGRIND) ./$(TESTEUR) "$(ARG)"
+
+run	:	all
+		$(VALGRIND) ./$(NAME) "$(ARG)"
 
 unit_test :
 
