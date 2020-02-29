@@ -6,7 +6,7 @@ WIP: documentation
 **ft_ls** is a 42 school project. 
 
 
-### Directories 
+### :open_file_folder: Directories 
 --------------
 
 ```
@@ -31,7 +31,7 @@ WIP: documentation
 |       .c files of the project
 |   +--
 ```
-### Makefile
+### :gear: Makefile
 -----------
 
 Run `make` command in order to compile the project and dependencies. 
