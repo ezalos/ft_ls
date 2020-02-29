@@ -1,1 +1,1 @@
-PAT +=  srcs/main.c 
+PAT += 	srcs/main.c 

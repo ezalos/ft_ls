@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   head.h                                             :+:      :+:    :+:   */
+/*   auto_ft_ls_.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ldevelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/02/29 19:25:12 by ldevelle         ###   ########.fr       */
+/*   Created: 2020/02/29 19:12:46 by ldevelle          #+#    #+#             */
+/*   Updated: 2020/02/29 19:12:46 by ldevelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEAD_H
-# define HEAD_H
+#ifndef AUTO_FT_LS__H
+# define AUTO_FT_LS__H
 
-# include "libft.h"
-// ./../libft/includes/
-// # include "auto.h"
-
-//Both libraries are required for opendir
-#include <sys/types.h>
-#include <dirent.h>
-# include "auto_ft_ls.h"
+void		print_struct_dirent(struct dirent *dir);
+void		list_files(char *name);
+int		main(int ac, char **av);
 
 #endif
