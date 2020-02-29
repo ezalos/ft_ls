@@ -1,5 +1,6 @@
 # ft_ls
-=======
+-------------
+
 WIP: documentation
 
 ft_ls is a 42 school project. 
@@ -7,14 +8,18 @@ ft_ls is a 42 school project.
 
 ## Directories
 --------------
-+-- _drafts
-|   +-- begin-with-the-crazy-ideas.textile
-|   +-- on-simplicity-in-technology.markdown
 
+```
++--:folder: **includes**
+|   +-- :file:
+|   +-- :file:
++--:folder: **includes**
+|   +-- :file:
+|   +-- :file:
+
+```
 ## Makefile
 -----------
-
-
 
 Run `make` command in order to compile the project and dependencies. 
 Run `make <rule>` in order to use a specific rule.
