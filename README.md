@@ -3,22 +3,35 @@
 
 WIP: documentation
 
-ft_ls is a 42 school project. 
+**ft_ls** is a 42 school project. 
 
 
-## Directories
+### Directories 
 --------------
 
 ```
-+--:folder: **includes**
-|   +-- :file:
-|   +-- :file:
-+--:folder: **includes**
-|   +-- :file:
-|   +-- :file:
-
++-- includes
+|   +--
+|       .h files of the project
+|   +--
++-- libft
+|   +--
+|       azelos libft linked as a git module
+|   +--
++-- mk_dependencies
+|   +--
+|       Makefile dependencies
+|   +--
++-- scripts
+|   +--
+|       Scripts used in the Makefile
+|   +--
++-- srcs
+|   +--
+|       .c files of the project
+|   +--
 ```
-## Makefile
+### Makefile
 -----------
 
 Run `make` command in order to compile the project and dependencies. 
