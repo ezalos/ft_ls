@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 15:04:16 by ldevelle          #+#    #+#              #
-#    Updated: 2020/02/29 19:24:12 by ldevelle         ###   ########.fr        #
+#    Updated: 2020/03/29 16:35:47 by ezalos           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,8 @@ AUTO_HEAD	=	$(MAIN_FOLD:%=auto/auto_%.h)
 
 HEAD		=	$(HEADERS:%=$(HEAD_DIR)%)
 
-mk			=	./mk_dependencies
-mk_p		= 	$(mk)/PAT/
+mk			=	./.makegenius
+mk_p		= 	$(mk)/srcs_path/
 include_pat	=	$(MAIN_FOLD:%=$(mk_p)pat_%.mk)
 include_pat	+=	$(mk_p)pat_.mk
 include_dep	=	$(include_pat)
@@ -49,7 +49,7 @@ include $(include_dep)
 OBJ 	= $(PAT:%.c=%.o)
 OBJS	= $(PAT:$(MASTER)%.c=$(DIR_OBJ)%.o)
 
-ARG 	?= ldevelle
+ARG 	?= "ldevelle"
 MSG		?= "Automated commit message!"
 
 ##########################
@@ -59,15 +59,13 @@ MSG		?= "Automated commit message!"
 ##########################
 
 ifeq ($(UNAME),Linux)
-update_head	=	$(MAIN_FOLD:%=sh scripts/get_protos_linux.sh % $(MASTER);)
-update_head	+=	sh scripts/get_protos.sh '' $(MASTER) '' $(NAME);
-update_dep	=	$(MAIN_FOLD:%=sh scripts/get_mk_srcs.sh % $(MASTER);)
-update_dep	+=	sh scripts/get_mk_srcs.sh '' $(MASTER) '' '-depth 1';
+update_head	=	bash .makegenius/scripts/get_protos.sh '' $(MASTER) '' $(NAME);
+update_dep	=	bash .makegenius/scripts/get_mk_srcs.sh '' $(MASTER) '' '-depth 1';
 else
-update_head	=	$(MAIN_FOLD:%=sh scripts/get_protos.sh % $(MASTER);)
-update_head	+=	sh scripts/get_protos.sh '' $(MASTER) '' $(NAME);
-update_dep	=	$(MAIN_FOLD:%=sh scripts/get_mk_srcs.sh % $(MASTER);)
-update_dep	+=	sh scripts/get_mk_srcs.sh '' $(MASTER) '' '-d 1';
+update_head	=	$(MAIN_FOLD:%=sh .makegenius/scripts/get_protos.sh % $(MASTER);)
+update_head	+=	sh .makegenius/scripts/get_protos.sh '' $(MASTER) '' $(NAME);
+update_dep	=	$(MAIN_FOLD:%=sh .makegenius/scripts/get_mk_srcs.sh % $(MASTER);)
+update_dep	+=	sh .makegenius/scripts/get_mk_srcs.sh '' $(MASTER) '' '-d 1';
 endif
 
 ##########################
@@ -178,43 +176,42 @@ endef
 
 all :	$(modules) $(NAME) auteur $(DIR_OBJ)
 
-ifeq ($(LIB_PRJCT), y)
-$(NAME):	$(OBJS) $(HEAD_DIR)
-	@$(call run_and_test, $(AR) $(NAME) $(OBJS))
+ifeq ($(LIB_PRJCT),y)
+$(NAME):	$(LIB) $(OBJS) $(HEAD_DIR)
+	$(call run_and_test, $(AR) $(NAME) $(OBJS))
 else
 $(NAME):	$(LIB) $(OBJS) $(HEAD_DIR)
-	@$(call run_and_test, $(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(HEADERS_DIRECTORIES))
+	$(call run_and_test, $(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(HEADERS_DIRECTORIES))
 endif
 
 $(DIR_OBJ)%.o:$(MASTER)%.c $(HEAD) Makefile
-	@mkdir -p $(DIR_OBJ)
-	@$(call run_and_test, $(CC) $(CFLAGS) $(HEADERS_DIRECTORIES) -o $@ -c $<)
+	mkdir -p $(DIR_OBJ)
+	$(call run_and_test, $(CC) $(CFLAGS) $(HEADERS_DIRECTORIES) -o $@ -c $<)
 
 $(LIB): FORCE
-		@$(MAKE) -C $(LIB_DIR)
+		$(MAKE) -C $(LIB_DIR)
 
 clean :
-	@rm -f $(OBJS)
-	@echo "\$(YELLOW)$(NAME) objs \$(END)\\thas been \$(GREEN)\\t\\t\\t  $@\$(END)"
+	rm -f $(OBJS)
+	echo "\$(YELLOW)$(NAME) objs \$(END)\\thas been \$(GREEN)\\t\\t\\t  $@\$(END)"
 
 fclean : clean
-	@rm -rf $(NAME) $(DIR_OBJ)
-	@echo "\$(YELLOW)$(NAME) \$(END)\\thas been \$(GREEN)\\t\\t\\t  $@\$(END)"
+	rm -rf $(NAME) $(DIR_OBJ)
+	echo "\$(YELLOW)$(NAME) \$(END)\\thas been \$(GREEN)\\t\\t\\t  $@\$(END)"
 
-re : fclean all
-
-
+re : fclean
+	$(MAKE) all
 
 rere :
-	@$(MAKE) re -C $(LIB_DIR)
-	@$(MAKE) re
+	$(MAKE) re -C $(LIB_DIR)
+	$(MAKE) re
 
 
 auteur : Makefile
-		@echo $(login) > auteur
+		echo $(login) > auteur
 
 $(DIR_OBJ) :
-		@mkdir -p $(DIR_OBJ)
+		mkdir -p $(DIR_OBJ)
 
 ##########################
 ##						##
@@ -245,28 +242,30 @@ true
 ##						##
 ##########################
 
-init:	init_git
-		@echo Hope you completed init.mk
+init:
+		sh ./.makegenius/scripts/init_makegenius.sh
+		echo -n "Do you wish to puh your project on github ?" && read ans && [ $${ans:-N} = y ]
+		$(MAKE) init_git
 
 init_git:
-		@rm -rf .git
-		@echo "# $(NAME)" > README.md
-		@git init
-		@git add -A
-		@git commit -m "first commit"
-		@git remote add origin $(GIT_REPO)
-		@git push -u origin master
+		rm -rf .git
+		echo "# $(NAME)" > README.md
+		git init
+		git add -A
+		git commit -m "first commit"
+		git remote add origin $(GIT_REPO)
+		git push -u origin master
 
 
 REQUEST 		= 'read -p "Enter a commit message:	" pwd && echo $$pwd'
 COMMIT_MESSAGE ?= $(shell bash -c $(REQUEST))
-# @$(GIT_VALID) || (echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ])
+# $(GIT_VALID) || (echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ])
 git :
-		@git add -A
-		@git status
-		@$(GIT_VALID) || (echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ])
-		@git commit -m "$(COMMIT_MESSAGE)"
-		@git push
+		git add -A
+		git status
+		$(GIT_VALID) || (echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ])
+		git commit -m "$(COMMIT_MESSAGE)"
+		git push
 
 modules :
 		$(GIT_MODULES)
@@ -278,37 +277,55 @@ modules :
 ##########################
 
 file : 	sources prototypes
-		@$(MAKE)
+		$(MAKE)
 
 sources :	object_ready
 		rm -rf $(mk_p)
 		mkdir -p $(mk_p)
 		echo $(update_dep)
 		$(update_dep)
-		@echo "\$(YELLOW)automatic sources\$(END)\\thas been \$(GREEN)\\t\\t  created\$(END)"
+		echo "\$(YELLOW)automatic sources\$(END)\\thas been \$(GREEN)\\t\\t  created\$(END)"
 
 DIR_PREP = $(shell find $(MASTER) -type d -exec echo {} \; | sed 's~$(MASTER)~$(DIR_OBJ)~g')
 object_ready :	$(DIR_OBJ)
 		rm -rf $(DIR_OBJ)/*
 		mkdir -p $(DIR_PREP)
 		find $(DIR_OBJ) -type d -exec touch {}/.gitkeep \;
-		@echo "\$(YELLOW)objects paths\$(END)\\t\\thas been \$(GREEN)\\t\\t  created\$(END)"
+		echo "\$(YELLOW)objects paths\$(END)\\t\\thas been \$(GREEN)\\t\\t  created\$(END)"
 
 prototypes :	auto_dir
-		@$(update_head)
-		@sh scripts/get_master_head.sh $(HEAD_DIR) $(NAME)
-		@echo "\$(YELLOW)automatic headers\$(END)\\thas been \$(GREEN)\\t\\t  created\$(END)"
+		$(update_head)
+		bash .makegenius/scripts/get_master_head.sh $(HEAD_DIR) $(NAME)
+		echo "\$(YELLOW)automatic headers\$(END)\\thas been \$(GREEN)\\t\\t  created\$(END)"
 
 auto_dir :
-		@mkdir -p $(HEAD_DIR)auto
+		mkdir -p $(HEAD_DIR)auto
 
+##########################
+##						##
+##		  SELF			##
+##						##
+##########################
+
+makegenius_repository=https://github.com/ezalos/Makegenius.git
+temp_folder=.tmp_makegenius_update/
+
+update :
+		rm -rf $(temp_folder)
+		git clone $(makegenius_repository) $(temp_folder)
+		bash "$(temp_folder).makegenius/scripts/update_makegenius.sh" $(temp_folder) &
+
+rm_update_tmp_dir:
+		rm -rf $(temp_folder)
+
+##########################
+##						##
+##		 PARAMS			##
+##						##
+##########################
 
 FORCE:
-
-##########################
-##						##
-##		 .PHONY			##
-##						##
-##########################
-
-.PHONY : all clean fclean re git file object_ready check FORCE
+.PHONY	:	all clean fclean re git file object_ready check update\
+			rm_update_tmp_dir auto_dir prototypes sources modules\
+			rere auteur run unit_test big init init_git FORCE
+.SILENT	:
