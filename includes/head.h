@@ -6,16 +6,16 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/03/29 20:19:33 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/03 19:11:55 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEAD_H
 # define HEAD_H
 
+# include "tree.h"
 # include "libft.h"
 // ./../libft/includes/
-// # include "auto.h"
 
 //Both libraries are required for opendir
 # include <sys/types.h>
@@ -24,6 +24,13 @@
 # include <error.h>
 # include <string.h>
 
+# include "auto_ft_ls.h"
+
+/*
+ *	# define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
+ *		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
+ *		x ,__func__, __FILE__, __LINE__)
+*/
 
 # define DEFAULT_ARGUMENT	"."
 # define ERROR_DIR_OPEN		"Error opening dir"

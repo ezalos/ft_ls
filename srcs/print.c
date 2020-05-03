@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/04/26 23:41:57 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/04/27 00:01:19 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,3 +253,4 @@ void	print_ls(struct dirent *file_infos, struct stat statbuf)
 	print_file_name(file_infos, statbuf);
 	ft_printf("\n");
 }
+

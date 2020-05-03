@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 15:04:16 by ldevelle          #+#    #+#              #
-#    Updated: 2020/04/26 23:48:05 by ezalos           ###   ########.fr        #
+#    Updated: 2020/04/15 20:21:44 by ezalos           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -183,7 +183,7 @@ $(DIR_OBJ)%.o:$(MASTER)%.c $(HEAD) Makefile
 	@$(call run_and_test, $(CC) $(CFLAGS) $(HEADERS_DIRECTORIES) -o $@ -c $<)
 
 $(LIB): FORCE
-	@$(MAKE) -C $(LIB_DIR)
+		$(MAKE) -C $(LIB_DIR)
 
 clean :
 	rm -f $(OBJS)
@@ -336,5 +336,6 @@ FORCE:
 .PHONY	:	all clean fclean re git file object_ready check update\
 			rm_update_tmp_dir auto_dir prototypes sources modules\
 			rere auteur run unit_test big init init_git FORCE
-.SILENT	:
-
+.SILENT	:	all clean fclean re git file object_ready check update\
+			rm_update_tmp_dir auto_dir prototypes sources modules\
+			rere auteur unit_test big init init_git FORCE
