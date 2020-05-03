@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 17:29:49 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/03 21:10:33 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/03 21:36:59 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ t_rbt		*tree_new_node(void *content)
 	node = ft_memalloc(sizeof(t_rbt));
 	node->content = content;
 	node->color = RED;
-	return (content);
+	node->parent = NULL;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
 }
 
 
@@ -285,6 +288,11 @@ t_rbt		*tree_insert(t_rbt *root, void* content, int key)
 	DEBUG_FUNC;
 	t_rbt	*n = tree_new_node(content);
 	n->key = key;
+		ft_printf("Init %p %p\n", root, n);
+		tree_inorder(root);
+		ft_printf("1 %p %p\n", n->left, n->parent);
+		tree_inorder(n);
+		ft_printf("2\n");
 	// Insert new Node into the current tree.
 	//tree_inorder(n);
 	tree_insert_recurse(root, n);
@@ -316,6 +324,7 @@ t_rbt		*tree_insert(t_rbt *root, void* content, int key)
 
 void		tree_str(t_rbt *root)
 {
+	DEBUG_FUNC;
 	if (root != NULL)
 	{
 		if (root->color == RED)
@@ -329,18 +338,20 @@ void		tree_str(t_rbt *root)
 
 void		tree_inorder(t_rbt *root) 
 {
+	DEBUG_FUNC;
+	ft_printf("%p\n", root);
 	if (root != NULL) 
 	{
 		tree_inorder(root->left);
-		ft_printf("P "); 
- 		tree_str(root->parent);
-		ft_printf("\t"); 
- 		tree_str(root);
-		ft_printf("\tl "); 
- 		tree_str(root->left);
-		ft_printf("\tr "); 
- 		tree_str(root->right);
-		ft_printf("\n"); 
+			ft_printf("P "); 
+ 			tree_str(root->parent);
+			ft_printf("\t"); 
+ 			tree_str(root);
+			ft_printf("\tl "); 
+ 			tree_str(root->left);
+			ft_printf("\tr "); 
+ 			tree_str(root->right);
+			ft_printf("\n"); 
 		tree_inorder(root->right); 									    
 	}
 }
