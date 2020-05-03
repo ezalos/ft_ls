@@ -6,21 +6,32 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/04/26 22:22:12 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/03 21:05:30 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-void	call_print(struct dirent *file_infos)
+typedef	struct		s_ls_files
 {
 	struct stat		statbuf;
-	
+	struct dirent	file_infos;
+	t_rbt			*content;
+
+}					t_ls_files;
+
+void	call_print(struct dirent *file_infos)
+{	
+	struct stat		statbuf;	
+
 	//print_struct_dirent(file_infos);
 	//file_path = ft_strjoin(name, file_infos->d_name);
 	if (stat(file_infos->d_name, &statbuf) == 0 /*SUCCESS*/)
 	{
-		//print_struct_stat(&statbuf);
+		
+		//n = tree_insert(n, file_infos->d_name, (int)file_infos->d_name[0]);
+		//tree_inorder(n);		
+//print_struct_stat(&statbuf);
 		print_ls(file_infos, statbuf);
 	}
 	else
@@ -91,10 +102,22 @@ void	list_files(char *name)
 
 int		main(int ac, char **av)
 {
+	t_rbt	*node = NULL;
+
+	node = tree_insert(NULL, av, 2);
+	ft_printf("->%d\n", node->key);
+	tree_inorder(node);
+	node = tree_insert(node, av, 4);
+	ft_printf("->%d\n", node->key);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 3);
+	ft_printf("->%d\n", node->key);
+	tree_print(node, 0);
 	if (ac > 1)
 		list_files(av[1]);
 	else
 		list_files(DEFAULT_ARGUMENT);
+	//tree_print(n, 0);
 }
 
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/03 19:09:19 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/03 19:12:59 by ezalos           ###   ########.fr       */
+/*   Created: 2020/05/03 19:31:35 by ezalos            #+#    #+#             */
+/*   Updated: 2020/05/03 19:31:59 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		tree_insert_case_2(t_rbt *n);
 void		tree_insert_case_3(t_rbt *n);
 void		tree_insert_case_4(t_rbt *n);
 void		tree_insert_repair(t_rbt *n);
-t_rbt		*tree_insert(t_rbt *root, void* content, t_rbt_compare func);
+t_rbt		*tree_insert(t_rbt *root, void* content, int key);
 void		tree_inorder(t_rbt *root); 
 void		padding_before(t_rbt *node, size_t space);
 void		padding_after(t_rbt *node);
