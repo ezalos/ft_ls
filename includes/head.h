@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/03 19:11:55 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 11:32:08 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 
 # include "auto_ft_ls.h"
 
-/*
- *	# define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
- *		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
- *		x ,__func__, __FILE__, __LINE__)
-*/
+
+# define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
+		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
+		x ,__func__, __FILE__, __LINE__)
+
 
 # define DEFAULT_ARGUMENT	"."
 # define ERROR_DIR_OPEN		"Error opening dir"

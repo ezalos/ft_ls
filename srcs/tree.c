@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 17:29:49 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/03 21:36:59 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 11:38:18 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ t_rbt		*tree_parent(t_rbt *node)
 	return (NULL);
 }
 
+t_rbt		*tree_grand_parent(t_rbt *node)
+{
+	return (tree_parent(tree_parent(node)));
+}
+
 t_rbt		*tree_root(t_rbt *node)
 {
 	t_rbt	*up;
@@ -68,7 +73,7 @@ t_rbt		*tree_sibling(t_rbt *node)
 		{
 			return (node->parent->right);
 		}
-		else
+		else if (node == node->parent->right)
 		{
 			return (node->parent->left);
 		}
@@ -95,7 +100,10 @@ void	tree_rot_left(t_rbt *node)
 	// Since the leaves of a red-black tree are empty,
 	// they cannot become internal nodes.
 	if(son_right == NULL)
+	{
+		DEBUG_ERROR_PRINT("Internal leaf is NULL");
 		return ;
+	}
 
 	node->right = son_right->left;
 	son_right->left = node;
@@ -124,7 +132,10 @@ void	tree_rot_right(t_rbt *node)
 	// Since the leaves of a red-black tree are empty,
 	// they cannot become internal nodes.
 	if(son_left == NULL)
+	{
+		DEBUG_ERROR_PRINT("Internal leaf is NULL");
 		return ;
+	}
 
 	node->left = son_left->right;
 	son_left->right = node;
@@ -170,9 +181,6 @@ void		tree_recoloring(t_rbt *node)
 
 void		tree_insert_recurse(t_rbt *root, t_rbt *n)
 {
-	DEBUG_FUNC;
-	tree_inorder(root);
-	tree_inorder(n);
 	// Recursively descend the tree until a leaf is found.
 	if (root != NULL)
 	{
@@ -197,7 +205,6 @@ void		tree_insert_recurse(t_rbt *root, t_rbt *n)
 			}
 			else
 			{
-				ft_printf("add\n");
 				root->right = n;
 			}
 		}
@@ -229,15 +236,15 @@ void		tree_insert_case_3(t_rbt *n)
 	DEBUG_FUNC;
 	tree_parent(n)->color = BLACK;
 	tree_uncle(n)->color = BLACK;
-	tree_parent(tree_parent(n))->color = RED;
-	tree_insert_repair(tree_parent(tree_parent(n)));
+	tree_grand_parent(n)->color = RED;
+	tree_insert_repair(tree_grand_parent(n));
 }
 
 void		tree_insert_case_4(t_rbt *n)
 {
 	DEBUG_FUNC;
 	t_rbt *p = tree_parent(n);
-	t_rbt *g = tree_parent(p);
+	t_rbt *g = tree_grand_parent(n);
 
 	if (n == p->right && p == g->left)
 	{
@@ -264,7 +271,6 @@ void		tree_insert_case_4(t_rbt *n)
 
 void		tree_insert_repair(t_rbt *n)
 {
-	DEBUG_FUNC;
 	if (tree_parent(n) == NULL)
 	{
 		tree_insert_case_1(n);
@@ -285,31 +291,17 @@ void		tree_insert_repair(t_rbt *n)
 
 t_rbt		*tree_insert(t_rbt *root, void* content, int key)
 {
-	DEBUG_FUNC;
 	t_rbt	*n = tree_new_node(content);
 	n->key = key;
-		ft_printf("Init %p %p\n", root, n);
-		tree_inorder(root);
-		ft_printf("1 %p %p\n", n->left, n->parent);
-		tree_inorder(n);
-		ft_printf("2\n");
 	// Insert new Node into the current tree.
 	//tree_inorder(n);
 	tree_insert_recurse(root, n);
-		ft_printf("Insert\n");
-		tree_inorder(root);
-		tree_inorder(n);
 
 	// Repair the tree in case any of the red-black properties have been violated.
 	tree_insert_repair(n);
-		ft_printf("Repair\n");
-		tree_inorder(root);
-		tree_inorder(n);
 
 	// Find the new root to return.
-		ft_printf("loop\n");
 	root = tree_root(n);
-		ft_printf("no loop\n");
 	return root;
 }
 
@@ -324,7 +316,6 @@ t_rbt		*tree_insert(t_rbt *root, void* content, int key)
 
 void		tree_str(t_rbt *root)
 {
-	DEBUG_FUNC;
 	if (root != NULL)
 	{
 		if (root->color == RED)
@@ -338,8 +329,6 @@ void		tree_str(t_rbt *root)
 
 void		tree_inorder(t_rbt *root) 
 {
-	DEBUG_FUNC;
-	ft_printf("%p\n", root);
 	if (root != NULL) 
 	{
 		tree_inorder(root->left);
@@ -356,7 +345,7 @@ void		tree_inorder(t_rbt *root)
 	}
 }
 
-#define NB_OF_SPACE		5
+#define NB_OF_SPACE		7
 
 void	padding_before(t_rbt *node, size_t space)
 {
@@ -397,16 +386,15 @@ void	padding_after(t_rbt *node)
 
 void	tree_print(t_rbt *node, size_t deep)
 {
-	DEBUG_FUNC;
 	if (node == NULL)
 		return ;
 	tree_print(node->right, deep + 1);
 
 	padding_before(node, (deep * NB_OF_SPACE));
 	if (node->color == RED)
-		printf("\033[0;31m%d \033[00m", node->key);
+		printf("\033[31m%d \033[00m", node->key);
 	else
-		printf("\033[37m%d \033[00m", node->key);
+		printf("\033[34m%d \033[00m", node->key);
 	padding_after(node);
 
 	tree_print(node->left, deep + 1);

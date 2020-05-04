@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/03 21:05:30 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/03 22:55:36 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,20 @@ int		main(int ac, char **av)
 	t_rbt	*node = NULL;
 
 	node = tree_insert(NULL, av, 2);
-	ft_printf("->%d\n", node->key);
-	tree_inorder(node);
+	tree_print(node, 0);
 	node = tree_insert(node, av, 4);
-	ft_printf("->%d\n", node->key);
 	tree_print(node, 0);
 	node = tree_insert(node, av, 3);
-	ft_printf("->%d\n", node->key);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 10);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 0);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 299);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 29);
+	tree_print(node, 0);
+	node = tree_insert(node, av, 99);
 	tree_print(node, 0);
 	if (ac > 1)
 		list_files(av[1]);
