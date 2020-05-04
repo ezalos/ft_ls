@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 17:29:49 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/04 11:38:18 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 14:35:05 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_rbt		*tree_root(t_rbt *node)
 	up = tree_parent(node);
 	while (up != NULL)
 	{
-//		ft_printf("n: %p\n", node);
+		//		ft_printf("n: %p\n", node);
 		node = up;
 		up = tree_parent(node);
 	}
@@ -94,15 +94,41 @@ t_rbt		*tree_uncle(t_rbt *node)
 
 void	tree_rot_left(t_rbt *node)
 {
-	t_rbt* son_right = node->right;
-	t_rbt* parent = tree_parent(node);
+	t_rbt	*old_root = node;
+	t_rbt	*parent;
+	t_rbt	*new_root;
+
+	parent = tree_parent(old_root);
+	new_root = old_root->right;
+	old_root->right = new_root->left;
+	new_root->left = old_root;
+	old_root->parent = new_root;
+
+	if (old_root->right != NULL)
+		old_root->right->parent = old_root;
+
+	if (parent != NULL)
+	{
+		if (parent->right == old_root)
+			parent->right = new_root;
+		else
+			parent->left = new_root;
+		new_root->parent = parent;
+
+	}
+	else
+		new_root->parent = NULL;
+
+
+	/*	t_rbt* son_right = node->right;
+		t_rbt* parent = tree_parent(node);
 
 	// Since the leaves of a red-black tree are empty,
 	// they cannot become internal nodes.
 	if(son_right == NULL)
 	{
-		DEBUG_ERROR_PRINT("Internal leaf is NULL");
-		return ;
+	DEBUG_ERROR_PRINT("Internal leaf is NULL");
+	return ;
 	}
 
 	node->right = son_right->left;
@@ -111,30 +137,56 @@ void	tree_rot_left(t_rbt *node)
 
 	// Handle other child/parent pointers.
 	if (node->right != NULL)
-		node->right->parent = node;
+	node->right->parent = node;
 
 	// Initially node could be the root.
 	if (parent != NULL)
 	{
-		if (node == parent->left)
-			parent->left = son_right;
-		else if (node == parent->right)
-			parent->right = son_right;
+	if (node == parent->left)
+	parent->left = son_right;
+	else if (node == parent->right)
+	parent->right = son_right;
 	}
-	son_right->parent = parent;
+	son_right->parent = parent;*/
 }
 
 void	tree_rot_right(t_rbt *node)
 {
-	t_rbt* son_left = node->left;
-	t_rbt* parent = tree_parent(node);
+	t_rbt	*old_root = node;
+
+	t_rbt	*parent;
+	t_rbt	*new_root;
+
+	parent = tree_parent(old_root);
+	new_root = old_root->left;
+	old_root->left = new_root->right;
+	new_root->right = old_root;
+	old_root->parent = new_root;
+
+	if (old_root->left != NULL)
+		old_root->left->parent = old_root;
+
+	if (parent != NULL)
+	{
+		if (parent->left == old_root)
+			parent->left = new_root;
+		else
+			parent->right = new_root;
+		new_root->parent = parent;
+
+	}
+	else
+		new_root->parent = NULL;
+
+	/*t_rbt* son_left = node->left;
+	  t_rbt* parent = tree_parent(node);
 
 	// Since the leaves of a red-black tree are empty,
 	// they cannot become internal nodes.
 	if(son_left == NULL)
 	{
-		DEBUG_ERROR_PRINT("Internal leaf is NULL");
-		return ;
+	DEBUG_ERROR_PRINT("Internal leaf is NULL");
+	return ;
 	}
 
 	node->left = son_left->right;
@@ -143,17 +195,17 @@ void	tree_rot_right(t_rbt *node)
 
 	// Handle other child/parent pointers.
 	if (node->left != NULL)
-		node->left->parent = node;
+	node->left->parent = node;
 
 	// Initially node could be the root.
 	if (parent != NULL)
 	{
-		if (node == parent->left)
-			parent->left = son_left;
-		else if (node == parent->right)
-			parent->right = son_left;
+	if (node == parent->left)
+	parent->left = son_left;
+	else if (node == parent->right)
+	parent->right = son_left;
 	}
-	son_left->parent = parent;
+	son_left->parent = parent;*/
 }
 
 /*
@@ -217,15 +269,51 @@ void		tree_insert_recurse(t_rbt *root, t_rbt *n)
 	n->color = RED;
 }
 
+void		tree_insert_recurse_func(t_rbt *root, t_rbt *n, t_rbt_compare *func)
+{
+	// Recursively descend the tree until a leaf is found.
+	if (root != NULL)
+	{
+		if (func(root->content, n->content) > 0)
+		{
+			if (root->left != NULL)
+			{
+				tree_insert_recurse_func(root->left, n, func);
+				return;
+			}
+			else
+			{
+				root->left = n;
+			}
+		}
+		else
+		{ // n->key >= root->key
+			if (root->right != NULL)
+			{
+				tree_insert_recurse_func(root->right, n, func);
+				return;
+			}
+			else
+			{
+				root->right = n;
+			}
+		}
+	}
+
+	// Insert new Node n.
+	n->parent = root;
+	n->left = NULL;
+	n->right = NULL;
+	n->color = RED;
+}
+
 void		tree_insert_case_1(t_rbt *n)
 {
-	DEBUG_FUNC;
 	n->color = BLACK;
 }
 
 void		tree_insert_case_2(t_rbt *n)
 {
-	DEBUG_FUNC;
 	// Do nothing since tree is still valid.
 	(void)n;
 	return;
@@ -233,7 +321,6 @@ void		tree_insert_case_2(t_rbt *n)
 
 void		tree_insert_case_3(t_rbt *n)
 {
-	DEBUG_FUNC;
 	tree_parent(n)->color = BLACK;
 	tree_uncle(n)->color = BLACK;
 	tree_grand_parent(n)->color = RED;
@@ -242,7 +329,6 @@ void		tree_insert_case_3(t_rbt *n)
 
 void		tree_insert_case_4(t_rbt *n)
 {
-	DEBUG_FUNC;
 	t_rbt *p = tree_parent(n);
 	t_rbt *g = tree_grand_parent(n);
 
@@ -257,6 +343,8 @@ void		tree_insert_case_4(t_rbt *n)
 		n = n->right;
 	}
 
+	p = tree_parent(n);
+	g = tree_grand_parent(n);
 	if (n == p->left)
 	{
 		tree_rot_right(g);
@@ -295,7 +383,25 @@ t_rbt		*tree_insert(t_rbt *root, void* content, int key)
 	n->key = key;
 	// Insert new Node into the current tree.
 	//tree_inorder(n);
+
 	tree_insert_recurse(root, n);
+
+	// Repair the tree in case any of the red-black properties have been violated.
+	tree_insert_repair(n);
+
+	// Find the new root to return.
+	root = tree_root(n);
+	return root;
+}
+
+t_rbt		*tree_insert_func(t_rbt *root, void* content, t_rbt_compare *func)
+{
+	t_rbt	*n = tree_new_node(content);
+	n->key = 0;
+	// Insert new Node into the current tree.
+	//tree_inorder(n);
+
+	tree_insert_recurse_func(root, n, func);
 
 	// Repair the tree in case any of the red-black properties have been violated.
 	tree_insert_repair(n);
@@ -332,15 +438,15 @@ void		tree_inorder(t_rbt *root)
 	if (root != NULL) 
 	{
 		tree_inorder(root->left);
-			ft_printf("P "); 
- 			tree_str(root->parent);
-			ft_printf("\t"); 
- 			tree_str(root);
-			ft_printf("\tl "); 
- 			tree_str(root->left);
-			ft_printf("\tr "); 
- 			tree_str(root->right);
-			ft_printf("\n"); 
+		ft_printf("P "); 
+		tree_str(root->parent);
+		ft_printf("\t"); 
+		tree_str(root);
+		ft_printf("\tl "); 
+		tree_str(root->left);
+		ft_printf("\tr "); 
+		tree_str(root->right);
+		ft_printf("\n"); 
 		tree_inorder(root->right); 									    
 	}
 }
@@ -371,6 +477,7 @@ void	padding_after(t_rbt *node)
 	if (node->left != NULL || node->right != NULL)
 	{
 		padding = NB_OF_SPACE - ft_nb_len(node->key, 10) - 4;
+		padding = NB_OF_SPACE - 3 - 4;
 		i = 0;
 		while (i < padding)
 		{
@@ -384,17 +491,30 @@ void	padding_after(t_rbt *node)
 	printf("\n");
 }
 
+void	tree_print_elem(t_rbt *node)
+{
+	t_sys_files	*file = ((t_sys_files*)node->content);
+	
+	if (node->color == RED)
+		printf("\033[31m");
+	else
+		printf("\033[34m");
+	printf("%.3s \033[00m", file->name);
+}
+
+
 void	tree_print(t_rbt *node, size_t deep)
 {
 	if (node == NULL)
+	{
+		//padding_before(node, (deep * NB_OF_SPACE));
+		//printf("\033[34mx \033[00m");
 		return ;
+	}
 	tree_print(node->right, deep + 1);
 
 	padding_before(node, (deep * NB_OF_SPACE));
-	if (node->color == RED)
-		printf("\033[31m%d \033[00m", node->key);
-	else
-		printf("\033[34m%d \033[00m", node->key);
+	tree_print_elem(node);
 	padding_after(node);
 
 	tree_print(node->left, deep + 1);

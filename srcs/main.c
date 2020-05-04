@@ -6,19 +6,12 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/03 22:55:36 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 14:41:40 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-typedef	struct		s_ls_files
-{
-	struct stat		statbuf;
-	struct dirent	file_infos;
-	t_rbt			*content;
-
-}					t_ls_files;
 
 void	call_print(struct dirent *file_infos)
 {	
@@ -32,7 +25,7 @@ void	call_print(struct dirent *file_infos)
 		//n = tree_insert(n, file_infos->d_name, (int)file_infos->d_name[0]);
 		//tree_inorder(n);		
 //print_struct_stat(&statbuf);
-		print_ls(file_infos, statbuf);
+		//print_ls(file_infos, statbuf);
 	}
 	else
 		perror(ERROR_DIR_STAT);
@@ -67,6 +60,67 @@ int		file_check(struct dirent *file_infos)
 	}
 }
 
+t_sys_files	*fill_struct(struct dirent *file_infos)
+{
+	t_sys_files	*sys;
+
+	sys = ft_memalloc(sizeof(t_sys_files));
+	if (stat(file_infos->d_name, &sys->statbuf) == 0 /*SUCCESS*/)
+	{
+		sys->file_infos = file_infos;
+		sys->check = file_check(file_infos);
+		sys->key = (int)file_infos->d_name[0];
+		if (sys->check == 1)
+			sys->key = -1;
+		else if (sys->check == 2)
+			sys->key = -2;
+		sys->name = file_infos->d_name;
+		//ft_printf("%s\n", sys->name);
+	}
+	else
+		perror(ERROR_DIR_STAT);
+	return (sys);
+}
+
+void		tree_print_inorder(t_rbt *root) 
+{
+	if (root != NULL) 
+	{
+		tree_print_inorder(root->left);
+		print_ls((t_sys_files*)root->content);
+		tree_print_inorder(root->right); 									    
+	}
+}
+
+
+int		sort_files(void *one, void *two)
+{
+	char	*name_one;
+	char	*name_two;
+	int		res = 0;
+	
+	//ft_printf("x\n");
+	name_one = ((t_sys_files*)one)->name;
+	name_two = ((t_sys_files*)two)->name;
+	/*if (((t_sys_files*)one)->check == 2)
+		return (-500);
+	if (((t_sys_files*)one)->check == 1)
+		return (-400);
+	if (((t_sys_files*)two)->check == 2)
+		return (400);
+	if (((t_sys_files*)two)->check == 1)
+		return (500);*/
+	if (*name_one == '.')
+		name_one++;
+	if (*name_two == '.')
+		name_two++;
+	//ft_printf("X\n");
+	//ft_printf("CMP %p|%p", name_one, name_two);
+	res = ft_strcmp(name_one, name_two);	
+	//ft_printf("CMP %s|%s -> %d\n", name_one, name_two, res);
+
+	return (res);
+}
 
 /*
  ** This function will list all the files in the current directory
@@ -74,9 +128,11 @@ int		file_check(struct dirent *file_infos)
 
 void	list_files(char *name)
 {
+	t_rbt			*node = NULL;
+	t_sys_files		*file;
 	DIR				*directory_infos = NULL;
 	struct dirent	*file_infos;
-	int				recursive = 0;
+	//int				recursive = 0;
 
 	directory_infos = opendir(name);
 	if (!directory_infos)
@@ -89,12 +145,16 @@ void	list_files(char *name)
 		perror(ERROR_DIR_READ);
 	while (file_infos)
 	{
-		call_print(file_infos);
-		if (file_infos)
-			if (!file_check(file_infos) && recursive)
-				list_files(file_infos->d_name);
+		file = fill_struct(file_infos);
+		node = tree_insert_func(node, file, &sort_files);
+		//tree_print(node, 0);
+		//call_print(file_infos);
+		//if (file_infos)
+		//	if (!file_check(file_infos) && recursive)
+		//		list_files(file_infos->d_name);
 		file_infos = readdir(directory_infos);
 	}
+	tree_print_inorder(node);
 	if (closedir(directory_infos) != 0/*SUCCESS*/)
 		perror(ERROR_DIR_CLOSE);
 }
@@ -102,24 +162,6 @@ void	list_files(char *name)
 
 int		main(int ac, char **av)
 {
-	t_rbt	*node = NULL;
-
-	node = tree_insert(NULL, av, 2);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 4);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 3);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 10);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 0);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 299);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 29);
-	tree_print(node, 0);
-	node = tree_insert(node, av, 99);
-	tree_print(node, 0);
 	if (ac > 1)
 		list_files(av[1]);
 	else

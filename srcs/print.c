@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/04/27 00:01:19 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 13:59:44 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,14 @@ void	print_file_last_modif(struct stat sb)
 	time_dic = ft_strsplit(no_newline, ' ');
     i = -1;
 	while (time_dic && time_dic[++i])
-		if (i == 1 || i == 2 || i == 3)
+	{
+		if (i == 1)
 			ft_printf("%s ", time_dic[i]);
+		if (i == 2)
+			ft_printf("%2s ", time_dic[i]);
+		if (i == 3)
+			ft_printf("%.5s ", time_dic[i]);
+	}
 }
 
 void	print_file_name(struct dirent *dir, struct stat sb)
@@ -242,15 +248,15 @@ void	print_file_name(struct dirent *dir, struct stat sb)
 	ft_printf("%~{}");
 }
 
-void	print_ls(struct dirent *file_infos, struct stat statbuf)
+void	print_ls(t_sys_files *file)
 {
-	print_file_type(statbuf);
-	print_file_mode(statbuf);
-	print_file_link_count(statbuf);
-	print_file_ownership(statbuf);
-	print_file_size(statbuf);
-	print_file_last_modif(statbuf);
-	print_file_name(file_infos, statbuf);
+	print_file_type(file->statbuf);
+	print_file_mode(file->statbuf);
+	print_file_link_count(file->statbuf);
+	print_file_ownership(file->statbuf);
+	print_file_size(file->statbuf);
+	print_file_last_modif(file->statbuf);
+	print_file_name(file->file_infos, file->statbuf);
 	ft_printf("\n");
 }
 
