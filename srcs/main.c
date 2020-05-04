@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/04 14:41:40 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/04 14:45:26 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		file_check(struct dirent *file_infos)
 t_sys_files	*fill_struct(struct dirent *file_infos)
 {
 	t_sys_files	*sys;
+	int			i;
 
 	sys = ft_memalloc(sizeof(t_sys_files));
 	if (stat(file_infos->d_name, &sys->statbuf) == 0 /*SUCCESS*/)
@@ -74,7 +75,10 @@ t_sys_files	*fill_struct(struct dirent *file_infos)
 			sys->key = -1;
 		else if (sys->check == 2)
 			sys->key = -2;
-		sys->name = file_infos->d_name;
+		sys->name = ft_strdup(file_infos->d_name);
+		i = -1;
+		while (sys->name[++i])
+			sys->name[i] = ft_tolower(sys->name[i]);
 		//ft_printf("%s\n", sys->name);
 	}
 	else
