@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/04 14:06:01 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/06 20:33:46 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,19 @@
 # include <error.h>
 # include <string.h>
 
-typedef	struct		s_sys_files
+typedef	struct			s_sys_files
 {
-	struct stat		statbuf;
-	struct dirent	*file_infos;
-	char			*name;
-	int				check;
-	int				key;
-	t_rbt			*content;
+	struct stat			statbuf;
+	struct dirent		*file_infos;
+	char				*name;
+	char				*path;
+	char				*d_name;
+	int					check;
+	int					key;
+	t_rbt				*content;
+	struct s_sys_files	*parent;
 
-}					t_sys_files;
+}						t_sys_files;
 
 # include "auto_ft_ls.h"
 

@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 15:04:16 by ldevelle          #+#    #+#              #
-#    Updated: 2020/04/15 20:21:44 by ezalos           ###   ########.fr        #
+#    Updated: 2020/05/06 19:55:23 by ezalos           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -183,7 +183,7 @@ $(DIR_OBJ)%.o:$(MASTER)%.c $(HEAD) Makefile
 	@$(call run_and_test, $(CC) $(CFLAGS) $(HEADERS_DIRECTORIES) -o $@ -c $<)
 
 $(LIB): FORCE
-		$(MAKE) -C $(LIB_DIR)
+		@$(MAKE) -C $(LIB_DIR)
 
 clean :
 	rm -f $(OBJS)

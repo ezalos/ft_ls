@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 18:51:38 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/03 19:01:25 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/06 20:16:24 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ typedef struct		s_rbt
 }					t_rbt;
 
 typedef	int		(t_rbt_compare)(void *, void *);
+typedef	int		(t_rbt_inorder)(t_rbt *);
 
 #endif

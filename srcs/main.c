@@ -6,172 +6,178 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/04 14:45:26 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/06 21:02:46 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
+#define		CURRENT_DIR		"."
+#define		CURRENT_DIR_LEN	1
+#define		UP_DIR			".."
+#define		UP_DIR_LEN		2
 
-void	call_print(struct dirent *file_infos)
-{	
-	struct stat		statbuf;	
-
-	//print_struct_dirent(file_infos);
-	//file_path = ft_strjoin(name, file_infos->d_name);
-	if (stat(file_infos->d_name, &statbuf) == 0 /*SUCCESS*/)
-	{
-		
-		//n = tree_insert(n, file_infos->d_name, (int)file_infos->d_name[0]);
-		//tree_inorder(n);		
-//print_struct_stat(&statbuf);
-		//print_ls(file_infos, statbuf);
-	}
-	else
-		perror(ERROR_DIR_STAT);
-}
-
-int		file_check(struct dirent *file_infos)
-{
-	if(file_infos->d_type == DT_DIR)
-	{
-		if ((!ft_strncmp(file_infos->d_name, "..", 2)
-			&& file_infos->d_name[2] == '\0'))
-		{
-			//ft_printf("Plop it's '..'\n");
-			return (1);
-		}
-		else if ((!ft_strncmp(file_infos->d_name, ".", 1)
-			&& file_infos->d_name[1] == '\0'))
-		{
-			//ft_printf("Plop it's '.'\n");
-			return (2);
-		}
-		else
-		{
-			//ft_printf("It's a normal dir\n");		
-			return (0);
-		}
-	}
-	else
-	{
-		//ft_printf("It's not a dir\n");
-		return (-1);
-	}
-}
-
-t_sys_files	*fill_struct(struct dirent *file_infos)
-{
-	t_sys_files	*sys;
-	int			i;
-
-	sys = ft_memalloc(sizeof(t_sys_files));
-	if (stat(file_infos->d_name, &sys->statbuf) == 0 /*SUCCESS*/)
-	{
-		sys->file_infos = file_infos;
-		sys->check = file_check(file_infos);
-		sys->key = (int)file_infos->d_name[0];
-		if (sys->check == 1)
-			sys->key = -1;
-		else if (sys->check == 2)
-			sys->key = -2;
-		sys->name = ft_strdup(file_infos->d_name);
-		i = -1;
-		while (sys->name[++i])
-			sys->name[i] = ft_tolower(sys->name[i]);
-		//ft_printf("%s\n", sys->name);
-	}
-	else
-		perror(ERROR_DIR_STAT);
-	return (sys);
-}
-
-void		tree_print_inorder(t_rbt *root) 
-{
-	if (root != NULL) 
-	{
-		tree_print_inorder(root->left);
-		print_ls((t_sys_files*)root->content);
-		tree_print_inorder(root->right); 									    
-	}
-}
-
+#define		IS_CURRENT_DIR		1
+#define		IS_UP_DIR			2
+#define		IS_DIR				0
+#define		IS_FILE				-1
 
 int		sort_files(void *one, void *two)
 {
 	char	*name_one;
 	char	*name_two;
 	int		res = 0;
-	
-	//ft_printf("x\n");
+
 	name_one = ((t_sys_files*)one)->name;
 	name_two = ((t_sys_files*)two)->name;
-	/*if (((t_sys_files*)one)->check == 2)
-		return (-500);
-	if (((t_sys_files*)one)->check == 1)
-		return (-400);
-	if (((t_sys_files*)two)->check == 2)
-		return (400);
-	if (((t_sys_files*)two)->check == 1)
-		return (500);*/
 	if (*name_one == '.')
 		name_one++;
 	if (*name_two == '.')
 		name_two++;
-	//ft_printf("X\n");
-	//ft_printf("CMP %p|%p", name_one, name_two);
 	res = ft_strcmp(name_one, name_two);	
-	//ft_printf("CMP %s|%s -> %d\n", name_one, name_two, res);
 
 	return (res);
+}
+
+int		file_check(struct dirent *file_infos)
+{
+	if(file_infos->d_type == DT_DIR)
+	{
+		if ((!ft_strncmp(file_infos->d_name, UP_DIR, UP_DIR_LEN)
+					&& file_infos->d_name[UP_DIR_LEN] == '\0'))
+			return (IS_UP_DIR);
+		else if ((!ft_strncmp(file_infos->d_name, CURRENT_DIR, CURRENT_DIR_LEN)
+					&& file_infos->d_name[CURRENT_DIR_LEN] == '\0'))
+			return (IS_CURRENT_DIR);
+		else
+			return (IS_DIR);
+	}
+	else
+		return (IS_FILE);
+}
+
+t_sys_files	*origin_struct(char *name)
+{
+	t_sys_files	*sys;
+	int			i;
+
+	sys = ft_memalloc(sizeof(t_sys_files));
+
+	if (lstat(name, &sys->statbuf) != 0 /*SUCCESS*/)
+	{
+		perror(ERROR_DIR_STAT);
+		return (NULL);
+	}
+
+	sys->d_name = name;
+
+	if (S_IFDIR == (sys->statbuf.st_mode & S_IFMT)) // IS DIR
+		sys->check = IS_DIR;
+	else
+		sys->check = IS_FILE;
+
+	sys->path = ft_strdup(sys->d_name);
+	sys->name = ft_strdup(sys->d_name);
+	i = -1;
+	while (sys->name[++i])
+		sys->name[i] = ft_tolower(sys->name[i]);
+	return (sys);
+}
+
+t_sys_files	*fill_struct(struct dirent *file_infos, t_sys_files *parent)
+{
+	t_sys_files	*sys;
+	int			i;
+
+	sys = ft_memalloc(sizeof(t_sys_files));
+	sys->parent = parent;
+	sys->file_infos = file_infos;
+	sys->d_name = ft_strdup(file_infos->d_name);
+	sys->path = ft_strjoin(sys->parent->path, ft_strdup("/"));
+	sys->path = ft_strjoin(sys->path, sys->d_name);
+	sys->check = file_check(file_infos);
+	if (lstat(sys->path, &sys->statbuf) != 0 /*SUCCESS*/)
+	{
+		perror(ERROR_DIR_STAT);
+		ft_printf("%s\n", sys->d_name);
+	}
+	sys->name = ft_strdup(sys->d_name);
+	i = -1;
+	while (sys->name[++i])
+		sys->name[i] = ft_tolower(sys->name[i]);
+	return (sys);
 }
 
 /*
  ** This function will list all the files in the current directory
  */
 
-void	list_files(char *name)
+t_rbt	*list_files(t_sys_files *daddy)
 {
 	t_rbt			*node = NULL;
 	t_sys_files		*file;
 	DIR				*directory_infos = NULL;
 	struct dirent	*file_infos;
-	//int				recursive = 0;
 
-	directory_infos = opendir(name);
-	if (!directory_infos)
+	directory_infos = opendir(daddy->path);
+	if (directory_infos)
 	{
-		perror(ERROR_DIR_OPEN);
-		return ;
-	}
-	file_infos = readdir(directory_infos);
-	if (!file_infos)
-		perror(ERROR_DIR_READ);
-	while (file_infos)
-	{
-		file = fill_struct(file_infos);
-		node = tree_insert_func(node, file, &sort_files);
-		//tree_print(node, 0);
-		//call_print(file_infos);
-		//if (file_infos)
-		//	if (!file_check(file_infos) && recursive)
-		//		list_files(file_infos->d_name);
 		file_infos = readdir(directory_infos);
+		if (file_infos)
+			while (file_infos)
+			{
+				file = fill_struct(file_infos, daddy);
+				node = tree_insert_func(node, file, &sort_files);
+				file_infos = readdir(directory_infos);
+			}
+		else
+			perror(ERROR_DIR_READ);
+		if (closedir(directory_infos) != 0/*SUCCESS*/)
+			perror(ERROR_DIR_CLOSE);
 	}
-	tree_print_inorder(node);
-	if (closedir(directory_infos) != 0/*SUCCESS*/)
-		perror(ERROR_DIR_CLOSE);
+	else
+		perror(ERROR_DIR_OPEN);
+	return (node); //free all?
 }
 
+int		recursive(t_rbt *node)
+{
+	t_sys_files		*file;
+	int				ret = 0;
+
+	file = node->content;
+	if (file && (file->check == IS_DIR))
+		ret = one_level(file);
+	return (ret);
+}
+
+int		one_level(t_sys_files *unix_file)
+{
+	t_rbt			*node = NULL;
+
+	if (S_IFDIR == (unix_file->statbuf.st_mode & S_IFMT)) // IS DIR
+		node = list_files(unix_file);
+	else if (unix_file->parent != NULL)
+		return (0);
+	else
+		node = tree_insert_func(node, unix_file, &sort_files);
+	ls_output(node);
+	if (0)
+		tree_inorder(node, &recursive);
+	return (1);
+}
 
 int		main(int ac, char **av)
 {
-	if (ac > 1)
-		list_files(av[1]);
-	else
-		list_files(DEFAULT_ARGUMENT);
-	//tree_print(n, 0);
-}
+	t_sys_files	*file;
 
+	if (ac > 1)
+		file = origin_struct(av[1]);
+	else
+		file = origin_struct(DEFAULT_ARGUMENT);
+	if (file)
+		one_level(file);
+	return (0);
+}
 
 

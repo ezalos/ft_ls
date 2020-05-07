@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 17:29:49 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/04 14:35:05 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/06 20:26:42 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,11 +433,23 @@ void		tree_str(t_rbt *root)
 		ft_printf("null");
 }
 
-void		tree_inorder(t_rbt *root) 
+int			tree_inorder(t_rbt *root, t_rbt_inorder *func)
+{
+	int		value = 0;
+
+	if (root != NULL) 
+	{
+		value += tree_inorder(root->left, func);
+		value += func(root);
+		value += tree_inorder(root->right, func); 									    
+	}
+	return value;
+}
+
+int		print_node_info(t_rbt *root)
 {
 	if (root != NULL) 
 	{
-		tree_inorder(root->left);
 		ft_printf("P "); 
 		tree_str(root->parent);
 		ft_printf("\t"); 
@@ -446,9 +458,17 @@ void		tree_inorder(t_rbt *root)
 		tree_str(root->left);
 		ft_printf("\tr "); 
 		tree_str(root->right);
-		ft_printf("\n"); 
-		tree_inorder(root->right); 									    
+		ft_printf("\n");
+		return (1);
 	}
+	else
+		ft_printf("Null node\n"); 
+	return (0);
+}
+
+void	tree_simple_print(t_rbt *root)
+{
+	tree_inorder(root, &print_node_info);
 }
 
 #define NB_OF_SPACE		7
