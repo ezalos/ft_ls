@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/06 20:33:46 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/08 22:08:48 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define HEAD_H
 
 # include "tree.h"
+# include "arg.h"
 # include "libft.h"
 // ./../libft/includes/
 
@@ -38,6 +39,17 @@ typedef	struct			s_sys_files
 }						t_sys_files;
 
 # include "auto_ft_ls.h"
+
+#define		CURRENT_DIR			"."
+#define		CURRENT_DIR_LEN		1
+#define		UP_DIR				".."
+#define		UP_DIR_LEN			2
+
+#define		IS_CURRENT_DIR		1
+#define		IS_UP_DIR			2
+#define		IS_DIR				0
+#define		IS_FILE				-1
+
 
 
 # define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\

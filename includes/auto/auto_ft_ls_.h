@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/07 23:04:45 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/07 23:04:45 by ezalos           ###   ########.fr       */
+/*   Created: 2020/05/08 21:02:56 by ezalos            #+#    #+#             */
+/*   Updated: 2020/05/08 21:03:06 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,18 @@ void		print_file_ownership(struct stat sb);
 void		print_file_size(size_t file_size);
 void		print_file_link_count(struct stat sb);
 void		print_file_name(char *name);
+void		print_file_link(t_sys_files *file);
 int		print_ls(t_rbt *node);
 int		tree_sum_size_inorder(t_rbt *root);
 void		ls_output(t_rbt *node);
+t_argp		*arg_mem(void);
+void		arg_print_one(t_one_arg *arg);
+void		arg_print(void);
+int		arg_add(char *name, char *help);
+t_argp		*arg_new(char *name, char *help);
+int		arg_parse(int ac, char **av);
+t_one_arg		*arg_get(char *name);
+int		arg_usage(void);
 int		sort_files(void *one, void *two);
 int		file_check(struct dirent *file_infos);
 t_sys_files		*origin_struct(char *name);

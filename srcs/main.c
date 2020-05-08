@@ -6,21 +6,11 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/06 21:02:46 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/08 22:21:44 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
-
-#define		CURRENT_DIR		"."
-#define		CURRENT_DIR_LEN	1
-#define		UP_DIR			".."
-#define		UP_DIR_LEN		2
-
-#define		IS_CURRENT_DIR		1
-#define		IS_UP_DIR			2
-#define		IS_DIR				0
-#define		IS_FILE				-1
 
 int		sort_files(void *one, void *two)
 {
@@ -162,17 +152,39 @@ int		one_level(t_sys_files *unix_file)
 	else
 		node = tree_insert_func(node, unix_file, &sort_files);
 	ls_output(node);
-	if (0)
+	if (arg_get("-R"))
+	{
 		tree_inorder(node, &recursive);
+	}
 	return (1);
 }
+
+# define PROGRAME_DESCRIPTION "List information about the FILEs (the current directory by default). Sort entries alphabetically by default."
 
 int		main(int ac, char **av)
 {
 	t_sys_files	*file;
 
-	if (ac > 1)
-		file = origin_struct(av[1]);
+	arg_new("ls", PROGRAME_DESCRIPTION);
+
+	arg_add("-h", "Helper");
+	arg_add("-R", "Program will recurse it self in each directory");
+	arg_add("-l", "List file information");
+	arg_add("-a", "Show hidden files");
+	arg_add("-t", "Sort files by time");
+	arg_add("--", "Announce end of options arguments");
+	arg_add("FILE", "Last argument will be used");
+
+	arg_parse(ac, av);
+	//arg_print();
+
+	if (arg_get("-h") != NULL)
+		return (arg_usage());
+
+	if (arg_get("--") && arg_get("--")->len)
+		file = origin_struct(arg_get("--")->raw[1]);
+	else if (ac - arg_mem()->nb_opts > 1)
+		file = origin_struct(av[ac - 1]);
 	else
 		file = origin_struct(DEFAULT_ARGUMENT);
 	if (file)
