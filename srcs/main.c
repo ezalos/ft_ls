@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/08 22:21:44 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/18 20:17:27 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int		one_level(t_sys_files *unix_file)
 	else
 		node = tree_insert_func(node, unix_file, &sort_files);
 	ls_output(node);
-	if (arg_get("-R"))
+	if (parse_get("Recurse"))
 	{
 		tree_inorder(node, &recursive);
 	}
@@ -161,33 +161,35 @@ int		one_level(t_sys_files *unix_file)
 
 # define PROGRAME_DESCRIPTION "List information about the FILEs (the current directory by default). Sort entries alphabetically by default."
 
+
 int		main(int ac, char **av)
 {
 	t_sys_files	*file;
 
-	arg_new("ls", PROGRAME_DESCRIPTION);
+	parse_new("ls", PROGRAME_DESCRIPTION);
 
-	arg_add("-h", "Helper");
-	arg_add("-R", "Program will recurse it self in each directory");
-	arg_add("-l", "List file information");
-	arg_add("-a", "Show hidden files");
-	arg_add("-t", "Sort files by time");
-	arg_add("--", "Announce end of options arguments");
-	arg_add("FILE", "Last argument will be used");
+	parse_add_option('R', "Recurse",	"Recursively visit each directory");
+	parse_add_option('r', "reverse",	"Reverse sort order");
+	parse_add_option('l', "list",		"List file information");
+	parse_add_option('a', "all",		"Show hidden files");
+	parse_add_option('t', "time",		"Sort files by time");
+	parse_add_option('h', "help",		"Display Usage (this message)");
 
-	arg_parse(ac, av);
+	parse_add_arg("PATH", "List information about the content of the directory.\
+			Default is current directory");
+
+	if (parse_args(ac, av) == FAILURE)
+		return (0);
 	//arg_print();
 
-	if (arg_get("-h") != NULL)
-		return (arg_usage());
-
-	if (arg_get("--") && arg_get("--")->len)
-		file = origin_struct(arg_get("--")->raw[1]);
-	else if (ac - arg_mem()->nb_opts > 1)
-		file = origin_struct(av[ac - 1]);
+	ft_printf("ARG: %s\n",parse_get("PATH")->raw[0]);
+	if (parse_get("help") != NULL)
+		return (parse_usage());
+	if (parse_get("PATH") != NULL)
+		file = origin_struct(parse_get("PATH")->raw[0]);
 	else
 		file = origin_struct(DEFAULT_ARGUMENT);
-	if (file)
+	if (file && 0)
 		one_level(file);
 	return (0);
 }

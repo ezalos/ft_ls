@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/08 22:07:16 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/18 20:05:25 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,7 @@ int		print_ls(t_rbt *node)
 {
 	t_sys_files *file = node->content;
 
-	if (arg_get("-R"))
+	if (parse_get("Recurse"))
 		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
 			return (0);
 	print_file_color(file->statbuf, file->path);
@@ -329,7 +329,7 @@ void	ls_output(t_rbt *node)
 {
 	size_t	sum = tree_inorder(node, &tree_sum_size_inorder);
 
-	if (arg_get("-R"))
+	if (parse_get("-R"))
 	{
 		if (((t_sys_files*)node->content)->parent->parent)
 			ft_printf("\n");
