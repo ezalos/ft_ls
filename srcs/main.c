@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/06/01 00:07:35 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:19:29 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ int		one_level(t_sys_files *unix_file)
 {
 	t_rbt			*node = NULL;
 
-	if (S_IFDIR == (unix_file->statbuf.st_mode & S_IFMT)) // IS DIR
+	if (IS_FILE_DIR(unix_file->statbuf))//	IS DIR
 		node = list_files(unix_file);
-	else if (unix_file->parent != NULL)
-		return (0);
-	else
+	else if (unix_file->parent == NULL)//	lonely file
 		node = tree_insert_func(node, unix_file, &sort_files);
+	else
+		return (0);
 	if (node)
 	{
 		ls_output(node);

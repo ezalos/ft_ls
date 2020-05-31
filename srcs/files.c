@@ -1,7 +1,7 @@
 
 #include "head.h"
 
-int			fill_name(t_sys_files *sys, char *name, char *path)
+static int			fill_name(t_sys_files *sys, char *name, char *path)
 {
 	char	*tmp;
 	int		i;
@@ -30,7 +30,7 @@ int			fill_name(t_sys_files *sys, char *name, char *path)
 	return (SUCCESS);
 }
 
-int		file_check(t_sys_files *sys, char *name)
+static int			file_check(t_sys_files *sys, char *name)
 {
 	if(IS_FILE_DIR(sys->statbuf))
 	{
@@ -47,7 +47,7 @@ int		file_check(t_sys_files *sys, char *name)
 		return (IS_FILE);
 }
 
-t_sys_files	*file_struct(char *name, t_sys_files *parent)
+t_sys_files			*file_struct(char *name, t_sys_files *parent)
 {
 	t_sys_files	*sys;
 
@@ -67,7 +67,7 @@ t_sys_files	*file_struct(char *name, t_sys_files *parent)
 	return (sys);
 }
 
-t_rbt	*list_files(t_sys_files *daddy)
+t_rbt			*list_files(t_sys_files *daddy)
 {
    t_rbt			*node = NULL;
    t_sys_files		*file;

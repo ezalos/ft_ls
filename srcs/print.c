@@ -6,14 +6,12 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/31 23:49:19 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:09:27 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-#define MAGIC_NUMBER_LEN		4
-#define MAGIC_NUMBER_ELF		0x464c457f
 
 uint32_t	read_magic_number(char *path)
 {
@@ -129,8 +127,6 @@ void	print_file_mode(struct stat sb)
 	ft_printf(" ");
 }
 
-#include <grp.h>
-#include <pwd.h>
 
 void	print_file_ownership(struct stat sb)
 {

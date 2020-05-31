@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 00:04:43 by ezalos            #+#    #+#             */
-/*   Updated: 2020/06/01 00:05:18 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:21:35 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ void		padding_before(t_rbt *node, size_t space);
 void		padding_after(t_rbt *node);
 void		tree_print_elem(t_rbt *node);
 void		tree_print(t_rbt *node, size_t deep);
-int		fill_name(t_sys_files *sys, char *name, char *path);
-int		file_check(t_sys_files *sys, char *name);
 t_sys_files		*file_struct(char *name, t_sys_files *parent);
 t_rbt		*list_files(t_sys_files *daddy);
 

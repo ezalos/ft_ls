@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/06/01 00:08:00 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:09:18 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <dirent.h>
 # include <error.h>
 # include <string.h>
+//reading rights of file (user/groupe)
+#include <grp.h>
+#include <pwd.h>
 
 typedef	struct			s_sys_files
 {
@@ -49,6 +52,8 @@ typedef	struct			s_sys_files
 #define		IS_FILE				-1
 
 
+#define MAGIC_NUMBER_LEN		4
+#define MAGIC_NUMBER_ELF		0x464c457f
 
 # define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
 		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
