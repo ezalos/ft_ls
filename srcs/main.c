@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/06/01 00:03:25 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:07:35 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ int		one_level(t_sys_files *unix_file)
 	}
 	return (1);
 }
-
-# define PROGRAME_DESCRIPTION "List information about the FILEs \
-(the current directory by default). \
-Sort entries alphabetically by default."
-
 
 int		main(int ac, char **av)
 {

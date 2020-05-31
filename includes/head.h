@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/18 22:25:17 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/01 00:08:00 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 typedef	struct			s_sys_files
 {
 	struct stat			statbuf;
-	struct dirent		*file_infos;
 	char				*name_lowercase;
 	char				*path;
 	char				*d_name;
@@ -54,6 +53,12 @@ typedef	struct			s_sys_files
 # define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
 		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
 		x ,__func__, __FILE__, __LINE__)
+
+# define IS_FILE_DIR(sb)	(S_IFDIR == (sb.st_mode & S_IFMT) ? TRUE : FALSE)
+
+# define PROGRAME_DESCRIPTION "List information about the FILEs \
+(the current directory by default). \
+Sort entries alphabetically by default."
 
 
 # define DEFAULT_ARGUMENT	"."

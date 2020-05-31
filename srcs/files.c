@@ -1,6 +1,5 @@
 
 #include "head.h"
-# define IS_FILE_DIR(sb)	(S_IFDIR == (sb.st_mode & S_IFMT) ? TRUE : FALSE)
 
 int			fill_name(t_sys_files *sys, char *name, char *path)
 {
