@@ -5,17 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/18 20:04:09 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/18 20:04:17 by ezalos           ###   ########.fr       */
+/*   Created: 2020/06/01 00:04:43 by ezalos            #+#    #+#             */
+/*   Updated: 2020/06/01 00:05:18 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AUTO_FT_LS__H
 # define AUTO_FT_LS__H
 
-void		print_struct_dirent_d_type(struct dirent *dir);
-void		print_struct_dirent(struct dirent *dir);
-void		print_struct_stat(struct stat *stat);
 uint32_t		read_magic_number(char *path);
 void		print_file_color(struct stat sb, char *path);
 void		print_file_type(struct stat sb);
@@ -41,10 +38,6 @@ int		parse_args_save(int arg_place, t_argument *argument, int arg_type);
 int		parse_args(int ac, char **av);
 int		parse_usage(void);
 int		sort_files(void *one, void *two);
-int		file_check(struct dirent *file_infos);
-t_sys_files		*origin_struct(char *name);
-t_sys_files		*fill_struct(struct dirent *file_infos, t_sys_files *parent);
-t_rbt		*list_files(t_sys_files *daddy);
 int		recursive(t_rbt *node);
 int		one_level(t_sys_files *unix_file);
 int		main(int ac, char **av);
@@ -74,5 +67,9 @@ void		padding_before(t_rbt *node, size_t space);
 void		padding_after(t_rbt *node);
 void		tree_print_elem(t_rbt *node);
 void		tree_print(t_rbt *node, size_t deep);
+int		fill_name(t_sys_files *sys, char *name, char *path);
+int		file_check(t_sys_files *sys, char *name);
+t_sys_files		*file_struct(char *name, t_sys_files *parent);
+t_rbt		*list_files(t_sys_files *daddy);
 
 #endif

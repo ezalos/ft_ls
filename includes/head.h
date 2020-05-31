@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/05/08 22:08:48 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/18 22:25:17 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "tree.h"
 # include "arg.h"
 # include "libft.h"
-// ./../libft/includes/
 
 //Both libraries are required for opendir
 # include <sys/types.h>
@@ -28,7 +27,7 @@ typedef	struct			s_sys_files
 {
 	struct stat			statbuf;
 	struct dirent		*file_infos;
-	char				*name;
+	char				*name_lowercase;
 	char				*path;
 	char				*d_name;
 	int					check;

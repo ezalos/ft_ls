@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 17:29:49 by ezalos            #+#    #+#             */
-/*   Updated: 2020/05/06 20:26:42 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/05/18 22:26:33 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -519,7 +519,7 @@ void	tree_print_elem(t_rbt *node)
 		printf("\033[31m");
 	else
 		printf("\033[34m");
-	printf("%.3s \033[00m", file->name);
+	printf("%.3s \033[00m", file->d_name);
 }
 
 
