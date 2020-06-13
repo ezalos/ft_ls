@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/06/01 00:09:27 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/06/11 22:15:41 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,12 @@ void	print_file_ownership(struct stat sb)
 	if (pw)
 		ft_printf("%s ", pw->pw_name);
 	else
-		ft_printf("nb: %lld ", sb.st_uid);
+		ft_printf("~%lld ", sb.st_uid);
 	grp = getgrgid(sb.st_gid);
 	if (grp)
 		ft_printf("%s ", grp->gr_name);
 	else
-		ft_printf("nb: %lld ", sb.st_gid);
+		ft_printf("~%lld ", sb.st_gid);
 }
 
 void	print_file_size(size_t file_size)

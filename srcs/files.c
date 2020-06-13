@@ -9,7 +9,7 @@ static int			fill_name(t_sys_files *sys, char *name, char *path)
 	sys->d_name = ft_strdup(name);
 	if (path)
 	{
-		if (*path && path[ft_strlen(path) - 2] != '/')
+		if (*path && path[ft_strlen(path) - 1] != '/')
 		{
 			tmp = ft_strdup("/");
 			sys->path = ft_strjoin(path, tmp);
@@ -19,7 +19,7 @@ static int			fill_name(t_sys_files *sys, char *name, char *path)
 			ft_strdel(&tmp);
 		}
 		else
-			sys->path = ft_strjoin(sys->d_name, path);
+			sys->path = ft_strjoin(path, sys->d_name);
 	}
 	else
 		sys->path = ft_strdup(sys->d_name);
