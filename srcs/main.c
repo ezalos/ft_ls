@@ -6,13 +6,13 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 13:03:48 by aboitier         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:33:21 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-int		sort_files(void *one, void *two)
+int		sort_files_alpha(void *one, void *two)
 {
 	char	*name_one;
 	char	*name_two;
@@ -40,6 +40,21 @@ int		sort_files(void *one, void *two)
 	return (ft_strcmp(name_one, name_two));
 }
 
+int		sort_files_time(void *one, void *two)
+{
+	long long	time_one;
+	long long	time_two;
+
+	time_one = ((t_sys_files*)one)->statbuf.st_mtime;
+	time_two = ((t_sys_files*)two)->statbuf.st_mtime;
+
+	if (time_one < time_two)
+		return (1);
+	else if (time_one == time_two)
+		return (sort_files_alpha(one, two));
+	return (-1);
+}
+
 int		recursive(t_rbt *node)
 {
 	t_sys_files		*file;
@@ -58,7 +73,12 @@ int		one_level(t_sys_files *unix_file)
 	if (IS_FILE_DIR(unix_file->statbuf))//	IS DIR
 		node = list_files(unix_file);
 	else if (unix_file->parent == NULL)//	lonely file
-		node = tree_insert_func(node, unix_file, &sort_files);
+	{
+		if (parse_get("time"))
+			node = tree_insert_func(node, unix_file, &sort_files_time);
+		else
+			node = tree_insert_func(node, unix_file, &sort_files_alpha);
+	}
 	else
 		return (0);
 	if (node)

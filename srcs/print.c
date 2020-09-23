@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/23 13:11:50 by aboitier         ###   ########.fr       */
+/*   Updated: 2020/09/23 17:55:01 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,5 +297,8 @@ void	ls_output(t_rbt *node)
 		print_file_size(sum);
 	}
 	ft_printf("\n");
-	tree_inorder(node, &print_ls);
+	if (!parse_get("reverse"))
+		tree_inorder(node, &print_ls);
+	else
+		tree_inrorder(node, &print_ls);
 }

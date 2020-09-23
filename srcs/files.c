@@ -82,7 +82,10 @@ t_rbt			*list_files(t_sys_files *daddy)
 		   while (file_infos)
 		   {
 			   file = file_struct(file_infos->d_name, daddy);
-			   node = tree_insert_func(node, file, &sort_files);
+			   if (parse_get("time"))
+				   node = tree_insert_func(node, file, &sort_files_time);
+			   else
+				   node = tree_insert_func(node, file, &sort_files_alpha);
 			   file_infos = readdir(directory_infos);
 		   }
 	   else
