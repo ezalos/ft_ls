@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 12:44:03 by aboitier         ###   ########.fr       */
+/*   Updated: 2020/09/23 13:00:33 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,20 @@ int		sort_files(void *one, void *two)
 		name_one++;
 	if (*name_two == '.')
 		name_two++;
+	if (((t_sys_files*)one)->check == IS_UP_DIR)
+	{
+		name_one++;
+		if (((t_sys_files*)two)->check == IS_CURRENT_DIR)
+			return 1;
+	}
+	if (((t_sys_files*)two)->check == IS_UP_DIR)
+	{
+		name_two++;
+		if (((t_sys_files*)one)->check == IS_CURRENT_DIR)
+			return -1;
+	}
 #endif
-	res = ft_strcmp(name_one, name_two);
-
-	return (res);
+	return (ft_strcmp(name_one, name_two));
 }
 
 int		recursive(t_rbt *node)
