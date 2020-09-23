@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 12:23:04 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/23 13:13:20 by aboitier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,12 @@ typedef	struct			s_sys_files
 
 
 #define MAGIC_NUMBER_LEN		4
+#if __linux__
 #define MAGIC_NUMBER_ELF		0x464c457f
+#elif __MACH__
+//#define MAGIC_NUMBER_ELF		0xcffaedfe
+#define MAGIC_NUMBER_ELF		0xfeedfacf
+#endif
 
 # define  DEBUG_ERROR_PRINT(x)	fprintf(stderr,\
 		"Internal error: %s\n\tfunc: %s\n\tfile: %s\n\tline: %d\n",\
