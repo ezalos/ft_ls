@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/23 17:55:01 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/23 19:42:54 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ void	ls_output(t_rbt *node)
 	size_t	sum = tree_inorder(node, &tree_sum_size_inorder);
 
 	file = node->content;
-	if (parse_get("Recurse"))
+	if (parse_get("recursive"))
 	{
 		if (file->parent)
 		{

@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 19:33:21 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/23 19:54:54 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int		sort_files_alpha(void *one, void *two)
 
 	name_one = ((t_sys_files*)one)->name_lowercase;
 	name_two = ((t_sys_files*)two)->name_lowercase;
-#if __linux__ 
+#if __linux__
+
 	if (*name_one == '.')
 		name_one++;
 	if (*name_two == '.')
@@ -37,6 +38,7 @@ int		sort_files_alpha(void *one, void *two)
 			return (-1);
 	}
 #endif
+
 	return (ft_strcmp(name_one, name_two));
 }
 
@@ -58,8 +60,9 @@ int		sort_files_time(void *one, void *two)
 int		recursive(t_rbt *node)
 {
 	t_sys_files		*file;
-	int				ret = 0;
+	int				ret;
 
+	ret = 0;
 	file = node->content;
 	if (file && (file->check == IS_DIR))
 		ret = one_level(file);
@@ -84,7 +87,7 @@ int		one_level(t_sys_files *unix_file)
 	if (node)
 	{
 		ls_output(node);
-		if (parse_get("Recurse"))
+		if (parse_get("recursive"))
 			tree_inorder(node, &recursive);
 		//free all
 	}
@@ -97,7 +100,7 @@ int		main(int ac, char **av)
 
 	parse_new("ls", PROGRAME_DESCRIPTION);
 
-	parse_add_option('R', "Recurse",	"Recursively visit each directory");
+	parse_add_option('R', "recursive",	"Recursively visit each directory");
 	parse_add_option('r', "reverse",	"Reverse sort order");
 	parse_add_option('l', "list",		"List file information");
 	parse_add_option('a', "all",		"Show hidden files");
@@ -105,7 +108,7 @@ int		main(int ac, char **av)
 	parse_add_option('h', "help",		"Display Usage (this message)");
 
 	parse_add_arg("PATH", "List information about the content of the directory.\
-			Default is current directory");
+Default is current directory");
 
 	if (parse_args(ac, av) == FAILURE)
 		return (0);
