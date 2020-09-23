@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/06/01 00:19:29 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/23 12:44:03 by aboitier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ int		sort_files(void *one, void *two)
 
 	name_one = ((t_sys_files*)one)->name_lowercase;
 	name_two = ((t_sys_files*)two)->name_lowercase;
+#if __linux__ 
 	if (*name_one == '.')
 		name_one++;
 	if (*name_two == '.')
 		name_two++;
+#endif
 	res = ft_strcmp(name_one, name_two);
 
 	return (res);
