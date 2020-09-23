@@ -6,21 +6,24 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/06/01 00:09:18 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/23 12:23:04 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEAD_H
 # define HEAD_H
 
-# include "tree.h"
-# include "arg.h"
 # include "libft.h"
 
 //Both libraries are required for opendir
 # include <sys/types.h>
 # include <dirent.h>
+
+#if __linux__
 # include <error.h>
+#elif __MACH__
+#endif
+
 # include <string.h>
 //reading rights of file (user/groupe)
 #include <grp.h>
