@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/24 18:51:38 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/24 21:53:31 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,13 @@ void	print_file_size(size_t file_size)
 	float		save;
 	int			shift;
 	int			unit;
+	int			point;
 
 	size = 1;
 	unit = 1024;
 	save = file_size;
 	shift = 3;
+	point = 0;
 	while (save > unit)
 	{
 		save = save / unit;
@@ -169,9 +171,12 @@ void	print_file_size(size_t file_size)
 	else
 	{
 		if (save < 10)
-			ft_printf("%*.*f", shift, 1, save);
-		else
-			ft_printf("%*.*f", shift, 0, save);
+			point = 1;
+#if __MACH__
+		ft_printf("%*.*fB", shift, point, save);
+#elif __linux__
+		ft_printf("%*.*f", shift, point, save);
+#endif
 		if (size == 2)
 			ft_printf("K");
 		else if (size == 3)
@@ -308,13 +313,13 @@ void	ls_output(t_rbt *node)
 	}
 	if (parse_get("list"))//TODO: if more than one file
 	{
+		ft_printf("total ");
 #if __linux__
-		ft_printf("total %d\n", sum / 2);
+		print_file_size(sum * 1000 / 2);
 #elif __MACH__
-		ft_printf("total %d\n", sum / 2);
+		ft_printf("%u", sum);
 #endif
-		//print_file_size(sum);
-		//ft_printf("\n");
+		ft_printf("\n");
 	}
 	if (!parse_get("reverse"))
 		tree_inorder(node, parse_get("list") ? &print_ls_l : &print_ls);
