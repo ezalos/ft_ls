@@ -6,11 +6,13 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 19:54:54 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/24 16:09:10 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
+
+#if __linux__
 
 int		sort_files_alpha(void *one, void *two)
 {
@@ -19,7 +21,6 @@ int		sort_files_alpha(void *one, void *two)
 
 	name_one = ((t_sys_files*)one)->name_lowercase;
 	name_two = ((t_sys_files*)two)->name_lowercase;
-#if __linux__
 
 	if (*name_one == '.')
 		name_one++;
@@ -37,10 +38,23 @@ int		sort_files_alpha(void *one, void *two)
 		if (((t_sys_files*)one)->check == IS_CURRENT_DIR)
 			return (-1);
 	}
-#endif
 
 	return (ft_strcmp(name_one, name_two));
 }
+
+#elif __MACH__
+
+int		sort_files_alpha(void *one, void *two)
+{
+	char	*name_one;
+	char	*name_two;
+
+	name_one = ((t_sys_files*)one)->d_name;
+	name_two = ((t_sys_files*)two)->d_name;
+
+	return (ft_strcmp(name_one, name_two));
+}
+#endif
 
 int		sort_files_time(void *one, void *two)
 {
@@ -89,7 +103,7 @@ int		one_level(t_sys_files *unix_file)
 		ls_output(node);
 		if (parse_get("recursive"))
 			tree_inorder(node, &recursive);
-		//free all
+		//TODO: free all
 	}
 	return (1);
 }
@@ -107,8 +121,8 @@ int		main(int ac, char **av)
 	parse_add_option('t', "time",		"Sort files by time");
 	parse_add_option('h', "help",		"Display Usage (this message)");
 
-	parse_add_arg("PATH", "List information about the content of the directory.\
-Default is current directory");
+	parse_add_arg("PATH", "List sorted information about the content of the \
+directory. Default PATH is current directory.");
 
 	if (parse_args(ac, av) == FAILURE)
 		return (0);

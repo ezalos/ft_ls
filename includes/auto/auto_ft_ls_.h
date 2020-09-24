@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/23 19:30:51 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/23 19:30:51 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/24 12:41:21 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/24 12:41:21 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		print_file_link_count(struct stat sb);
 void		print_file_name(char *name);
 void		print_file_link(t_sys_files *file);
 int		print_ls(t_rbt *node);
+int		print_ls_l(t_rbt *node);
 int		tree_sum_size_inorder(t_rbt *root);
 void		ls_output(t_rbt *node);
 int		sort_files_alpha(void *one, void *two);

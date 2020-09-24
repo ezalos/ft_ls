@@ -6,7 +6,7 @@
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 19:54:04 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/24 12:30:11 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,14 @@ t_rbt				*list_files(t_sys_files *daddy)
 		if (file_infos)
 			while (file_infos)
 			{
-				file = file_struct(file_infos->d_name, daddy);
-				if (parse_get("time"))
-					node = tree_insert_func(node, file, &sort_files_time);
-				else
-					node = tree_insert_func(node, file, &sort_files_alpha);
+				if (parse_get("all") || file_infos->d_name[0] != '.')
+				{
+					file = file_struct(file_infos->d_name, daddy);
+					if (parse_get("time"))
+						node = tree_insert_func(node, file, &sort_files_time);
+					else
+						node = tree_insert_func(node, file, &sort_files_alpha);
+				}
 				file_infos = readdir(directory_infos);
 			}
 		else

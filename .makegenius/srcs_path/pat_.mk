@@ -1,3 +1,3 @@
-PAT += 	srcs/print.c \
+PAT += 	srcs/files.c \
 	srcs/main.c \
-	srcs/files.c 
+	srcs/print.c 

@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/23 19:59:30 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/24 18:21:36 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_file_type(struct stat sb)
 	else if (S_IFDIR == (sb.st_mode & S_IFMT))
 		ft_printf("d");//directory
 	else if (S_IFIFO == (sb.st_mode & S_IFMT))
-		ft_printf("F");//FIFO/pipe
+		ft_printf("p");//FIFO/pipe
 	else if (S_IFLNK == (sb.st_mode & S_IFMT))
 		ft_printf("l");//symlink
 	else if (S_IFREG == (sb.st_mode & S_IFMT))
@@ -181,7 +181,6 @@ void	print_file_size(size_t file_size)
 		else if (size == 2)
 			ft_printf("T");
 	}
-	ft_printf(" ");
 }
 
 void	print_file_link_count(struct stat sb)
@@ -191,6 +190,11 @@ void	print_file_link_count(struct stat sb)
 	shift = 2;
 	ft_printf("%*ld ", shift, (long) sb.st_nlink);
 }
+
+#define TIMESTR_MON		1
+#define TIMESTR_DAY		2
+#define TIMESTR_HOU		3
+#define TIMESTR_YEA		4
 
 void	print_file_last_modif(struct stat sb)
 {
@@ -204,16 +208,12 @@ void	print_file_last_modif(struct stat sb)
 		if (no_newline[i] == '\n')
 			no_newline[i] = ' ';
 	time_dic = ft_strsplit(no_newline, ' ');
-	i = -1;
-	while (time_dic && time_dic[++i])
-	{
-		if (i == 1)
-			ft_printf("%s ", time_dic[i]);
-		if (i == 2)
-			ft_printf("%2s ", time_dic[i]);
-		if (i == 3)
-			ft_printf("%.5s ", time_dic[i]);
-	}
+	ft_printf("%s ", time_dic[TIMESTR_MON]);
+	ft_printf("%2s ", time_dic[TIMESTR_DAY]);
+	if (sb.st_mtime > time(NULL) || sb.st_mtime < time(NULL) - 1616544000)
+		ft_printf(" %s ", time_dic[TIMESTR_YEA]);
+	else
+		ft_printf("%.5s ", time_dic[TIMESTR_HOU]);
 }
 
 void	print_file_name(char *name)
@@ -252,12 +252,26 @@ int		print_ls(t_rbt *node)
 		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
 			return (0);
 	print_file_color(file->statbuf, file->path);
+	print_file_name(file->d_name);
+	ft_printf("%~{}");
+	ft_printf("  ");
+	return (0);
+}
+int		print_ls_l(t_rbt *node)
+{
+	t_sys_files *file = node->content;
+
+	if (parse_get("recursive"))
+		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
+			return (0);
+	print_file_color(file->statbuf, file->path);
 	print_file_type(file->statbuf);
 	ft_printf("%~{}");
 	print_file_mode(file->statbuf);
 	print_file_link_count(file->statbuf);
 	print_file_ownership(file->statbuf);
 	print_file_size(file->statbuf.st_size);
+	ft_printf(" ");
 	print_file_last_modif(file->statbuf);
 	print_file_color(file->statbuf, file->path);
 	print_file_name(file->d_name);
@@ -272,7 +286,7 @@ int			tree_sum_size_inorder(t_rbt *root)
 	int		value = 0;
 
 	if (root != NULL)
-		value += ((t_sys_files*)root->content)->statbuf.st_size;
+		value += ((t_sys_files*)root->content)->statbuf.st_blocks;
 	return value;
 }
 
@@ -291,14 +305,15 @@ void	ls_output(t_rbt *node)
 			ft_printf("%s\n", ((t_sys_files*)node->content)->parent->path);
 		}
 	}
-	if (1)//if more than one file
+	if (parse_get("list"))//TODO: if more than one file
 	{
-		ft_printf("total ");
-		print_file_size(sum);
+		ft_printf("total %d\n", sum / 2);
+		//print_file_size(sum);
+		//ft_printf("\n");
 	}
-	ft_printf("\n");
 	if (!parse_get("reverse"))
-		tree_inorder(node, &print_ls);
+		tree_inorder(node, parse_get("list") ? &print_ls_l : &print_ls);
 	else
-		tree_inrorder(node, &print_ls);
+		tree_inrorder(node, parse_get("list") ? &print_ls_l : &print_ls);
+	parse_get("list") ? ft_printf("") : ft_printf("\n");
 }
