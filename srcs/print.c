@@ -6,12 +6,33 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/24 21:53:31 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/25 18:53:25 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
+#define		FORMAT_RIGHTS		0
+#define		FORMAT_F_LINK		1
+#define		FORMAT_U_NAME		2
+#define		FORMAT_G_NAME		3
+#define		FORMAT_F_SIZE		4
+#define		FORMAT_T_HOUR		5
+#define		FORMAT_T_YEAR		6
+
+
+int			get_format(t_ls_format *new_format, int field)
+{
+	static t_ls_format	*format;
+	int					value;
+
+	if (new_format)
+		format = new_format;
+	value = 0;
+	if (format)
+		value = ((int*)format)[field];
+	return (value);
+}
 
 uint32_t	read_magic_number(char *path)
 {
@@ -100,7 +121,43 @@ void	print_file_type(struct stat sb)
 **   S_IXOTH     00001   others have execute permission
 */
 
-void	print_file_mode(struct stat sb)
+#include <sys/xattr.h>
+
+int		extended_attr(t_sys_files *file)
+{
+	char		buf_list[1000];
+	char		buf_attr[1000];
+	ssize_t		size_list;
+	ssize_t		size_attr;
+	int			len;
+
+	ft_bzero(buf_list, 1000);
+	size_list = llistxattr(file->path, buf_list, 1000);
+	if (size_list)
+		return (1);
+	return (0);
+	ft_printf("List size: %d", size_list);
+	len = 0;
+	while (len < (int)size_list)
+	{
+		ft_bzero(buf_attr, 1000);
+		if ((size_attr = lgetxattr(file->path, buf_list + len, buf_attr, 1000)) > 0)
+		{
+			buf_attr[size_attr] = '\0';
+			ft_printf("[%s:", buf_list + len);
+			ft_printf("%d:", size_attr);
+			ft_printf("%.*s]", size_attr, buf_attr);
+		}
+		else
+		{
+			ft_printf("%d:", size_attr);
+			break;
+		}
+		len += ft_strlen(buf_list + len);
+	}
+}
+
+void	print_file_mode(struct stat sb, t_sys_files *file)
 {
 	int mode = sb.st_mode;
 	int step;
@@ -120,10 +177,30 @@ void	print_file_mode(struct stat sb)
 		else
 			ft_printf("-");
 		if (1 & (mode >> i))
-			ft_printf("x");
+		{
+			if (i == 6 && mode & S_ISUID)
+				ft_printf("s");
+			else if (i == 3 && mode & S_ISGID)
+				ft_printf("s");
+			else
+				ft_printf("x");
+		}
 		else
-			ft_printf("-");
+		{
+			if (i == 0 && mode & S_ISVTX)
+				ft_printf("T");
+			else if (i == 6 && mode & S_ISUID)
+				ft_printf("S");
+			else if (i == 3 && mode & S_ISGID)
+				ft_printf("S");
+			else
+				ft_printf("-");
+		}
 	}
+	if (extended_attr(file))
+		ft_printf("+");
+	else if (get_format(NULL, FORMAT_RIGHTS))
+		ft_printf(" ");
 	ft_printf(" ");
 }
 
@@ -135,14 +212,14 @@ void	print_file_ownership(struct stat sb)
 
 	pw = getpwuid(sb.st_uid);
 	if (pw)
-		ft_printf("%s ", pw->pw_name);
+		ft_printf("%-*s ", get_format(NULL, FORMAT_RIGHTS), pw->pw_name);
 	else
-		ft_printf("~%lld ", sb.st_uid);
+		ft_printf("~%-*lld ", get_format(NULL, FORMAT_RIGHTS) - 1, sb.st_uid);
 	grp = getgrgid(sb.st_gid);
 	if (grp)
-		ft_printf("%s ", grp->gr_name);
+		ft_printf("%-*s ", get_format(NULL, FORMAT_RIGHTS), grp->gr_name);
 	else
-		ft_printf("~%lld ", sb.st_gid);
+		ft_printf("~%-*lld ", get_format(NULL, FORMAT_RIGHTS) - 1, sb.st_gid);
 }
 
 void	print_file_size(size_t file_size)
@@ -151,13 +228,13 @@ void	print_file_size(size_t file_size)
 	float		save;
 	int			shift;
 	int			unit;
-	int			point;
 
+	ft_printf("%*u", get_format(NULL, FORMAT_F_SIZE), file_size);
+	return ;
 	size = 1;
 	unit = 1024;
 	save = file_size;
 	shift = 3;
-	point = 0;
 	while (save > unit)
 	{
 		save = save / unit;
@@ -171,12 +248,9 @@ void	print_file_size(size_t file_size)
 	else
 	{
 		if (save < 10)
-			point = 1;
-#if __MACH__
-		ft_printf("%*.*fB", shift, point, save);
-#elif __linux__
-		ft_printf("%*.*f", shift, point, save);
-#endif
+			ft_printf("%*.*f", shift, 1, save);
+		else
+			ft_printf("%*.*f", shift, 0, save);
 		if (size == 2)
 			ft_printf("K");
 		else if (size == 3)
@@ -192,7 +266,7 @@ void	print_file_link_count(struct stat sb)
 {
 	int			shift;
 
-	shift = 2;
+	shift = get_format(NULL, FORMAT_F_LINK);
 	ft_printf("%*ld ", shift, (long) sb.st_nlink);
 }
 
@@ -200,6 +274,20 @@ void	print_file_link_count(struct stat sb)
 #define TIMESTR_DAY		2
 #define TIMESTR_HOU		3
 #define TIMESTR_YEA		4
+
+int		check_file_time(time_t file_time)
+{
+	static time_t	now;
+
+	if (!now)
+		now = time(NULL);
+	if (file_time > now + 3600)
+		return (TRUE);
+	if ((unsigned long long)file_time < (unsigned long long)now - 15552000)//1616544000)
+		return (TRUE);
+	return (FALSE);
+
+}
 
 void	print_file_last_modif(struct stat sb)
 {
@@ -213,12 +301,20 @@ void	print_file_last_modif(struct stat sb)
 		if (no_newline[i] == '\n')
 			no_newline[i] = ' ';
 	time_dic = ft_strsplit(no_newline, ' ');
-	ft_printf("%s ", time_dic[TIMESTR_MON]);
+	ft_printf("%-5s ", time_dic[TIMESTR_MON]);
 	ft_printf("%2s ", time_dic[TIMESTR_DAY]);
-	if (sb.st_mtime > time(NULL) || sb.st_mtime < time(NULL) - 1616544000)
-		ft_printf(" %s ", time_dic[TIMESTR_YEA]);
+	if (check_file_time(sb.st_mtime) || time_dic[TIMESTR_YEA][0] != '2')
+	{
+		//no need for lonely file
+		//if (get_format(NULL, FORMAT_T_HOUR))
+		//	ft_printf(" ");
+		ft_printf(" %04s ", time_dic[TIMESTR_YEA]);
+	}
 	else
 		ft_printf("%.5s ", time_dic[TIMESTR_HOU]);
+	//ft_printf("%llu-", (unsigned long long)time(NULL));
+	//ft_printf("%llu=", (unsigned long long)sb.st_mtime);
+	//ft_printf("%lld ", (unsigned long long)time(NULL) - (unsigned long long)sb.st_mtime);
 }
 
 void	print_file_name(char *name)
@@ -266,13 +362,14 @@ int		print_ls_l(t_rbt *node)
 {
 	t_sys_files *file = node->content;
 
+
 	if (parse_get("recursive"))
 		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
 			return (0);
 	print_file_color(file->statbuf, file->path);
 	print_file_type(file->statbuf);
 	ft_printf("%~{}");
-	print_file_mode(file->statbuf);
+	print_file_mode(file->statbuf, file);
 	print_file_link_count(file->statbuf);
 	print_file_ownership(file->statbuf);
 	print_file_size(file->statbuf.st_size);
@@ -288,11 +385,10 @@ int		print_ls_l(t_rbt *node)
 
 int			tree_sum_size_inorder(t_rbt *root)
 {
-
 	int		value = 0;
 
 	if (root != NULL)
-		value += ((t_sys_files*)root->content)->statbuf.st_blocks;
+		value += ((t_sys_files*)root->content)->statbuf.st_size;
 	return value;
 }
 
@@ -311,14 +407,12 @@ void	ls_output(t_rbt *node)
 			ft_printf("%s\n", ((t_sys_files*)node->content)->parent->path);
 		}
 	}
+	if (file->parent)
+		get_format(&file->parent->format, 0);
 	if (parse_get("list"))//TODO: if more than one file
 	{
 		ft_printf("total ");
-#if __linux__
-		print_file_size(sum * 1000 / 2);
-#elif __MACH__
-		ft_printf("%u", sum);
-#endif
+		print_file_size(sum);
 		ft_printf("\n");
 	}
 	if (!parse_get("reverse"))

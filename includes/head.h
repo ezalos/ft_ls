@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/23 13:13:20 by aboitier         ###   ########.fr       */
+/*   Updated: 2020/09/25 18:22:41 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,24 @@
 #include <grp.h>
 #include <pwd.h>
 
+typedef struct			s_ls_format
+{
+	int					rights;
+	int					links;
+	int					u_name;
+	int					g_name;
+	int					size;
+	int					hour;
+	int					year;
+	int					month;
+	int					day;
+	int					name;
+}						t_ls_format;
+
 typedef	struct			s_sys_files
 {
 	struct stat			statbuf;
+	struct s_ls_format	format;
 	char				*name_lowercase;
 	char				*path;
 	char				*d_name;
