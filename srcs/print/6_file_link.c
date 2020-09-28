@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:51:33 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 14:31:45 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 14:36:54 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_file_link(t_sys_files *file)
 			perror(ERROR_DIR_STAT);
 			return ;
 		}
+		ft_bzero(buf, 500);
 		if (readlink(file->path, buf, 500) == -1)
 			return ;
 		ft_printf(" -> ");
