@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:48:56 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 15:55:47 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	char *str;
 	ssize_t len_p;
 	// acl_entry_t entry_p;
-    acl = acl_get_link_np(file->path, ACL_TYPE_DEFAULT);
+    acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
 	if (acl)
 	{
 		len_p = 1000;
