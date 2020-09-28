@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:15:38 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 15:47:24 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,19 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 // the -l option is followed by a '+' character.
 
 	acl_t	acl;
+	char *str;
 	// acl_entry_t entry_p;
     acl = acl_get_link_np(file->path, ACL_TYPE_DEFAULT);
 	if (acl)
 	{
-		// if (acl_get_entry(acl, ACL_FIRST_ENTRY,  &entry_p))
-		// {
+		if ((str = acl_to_text(acl, 1000)) != NULL)
+		{
 			if (print)
 				ft_printf("+");
+			free(str);
 			ret += 1;
 			acl_free(acl);
-		// }
+		}
 	}
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
 	if (size_list)
