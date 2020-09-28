@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 14:46:49 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 15:11:24 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,17 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 // the -l option is followed by a '+' character.
 
 	acl_t	acl;
-    acl = acl_get_link_np(file->path , ACL_TYPE_ACCESS);
+	// acl_entry_t entry_p;
+    acl = acl_get_link_np(file->path, 0);
 	if (acl)
 	{
-		if (print)
-			ft_printf("+");
-		ret += 1;
-		acl_free(acl);
+		// if (acl_get_entry(acl, ACL_FIRST_ENTRY,  &entry_p))
+		// {
+			if (print)
+				ft_printf("+");
+			ret += 1;
+			acl_free(acl);
+		// }
 	}
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
 	if (size_list)
@@ -133,7 +137,7 @@ void	print_file_mode(struct stat sb, t_sys_files *file)
 		else
 			ft_printf("%c", (1 & (mode >> i)) ? 'x' : '-');
 	}
-	if (extended_attr(file, TRUE) && get_format(NULL, FORMAT_RIGHTS))
-		ft_printf(" ");
+	if (!extended_attr(file, TRUE))
+		ft_printf("%*s", get_format(NULL, FORMAT_RIGHTS));
 	ft_printf(" ");
 }
