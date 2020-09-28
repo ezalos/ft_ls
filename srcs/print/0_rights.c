@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:56:59 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 16:02:23 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	ssize_t len_p;
 	// acl_entry_t entry_p;
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
-	if (size_list)
+	if (size_list > 0)
 	{
 		if (print)
 			ft_printf("@");
