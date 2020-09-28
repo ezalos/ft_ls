@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:44:24 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 14:46:49 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	}
 
 #elif __MACH__
+// If the file or directory has extended attributes,
+// the permissions field printed by the -l option is followed by a '@' character.
+//
+// Otherwise, if the file or directory has extended security information
+// (such as an access control list), the permissions field printed by
+// the -l option is followed by a '+' character.
+
 	acl_t	acl;
     acl = acl_get_link_np(file->path , ACL_TYPE_ACCESS);
 	if (acl)
@@ -68,7 +75,7 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 		ret += 1;
 		acl_free(acl);
 	}
-	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW);
+	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
 	if (size_list)
 	{
 		if (print)
