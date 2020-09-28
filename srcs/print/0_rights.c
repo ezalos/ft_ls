@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:55:47 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 15:56:59 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,6 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	char *str;
 	ssize_t len_p;
 	// acl_entry_t entry_p;
-    acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (acl)
-	{
-		len_p = 1000;
-		if ((str = acl_to_text(acl, &len_p)) != NULL)
-		{
-			if (print)
-				ft_printf("+");
-			free(str);
-			ret += 1;
-			acl_free(acl);
-		}
-	}
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
 	if (size_list)
 	{
@@ -90,7 +77,22 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 			ft_printf("@");
 		ret += 1;
 	}
-
+	else
+	{
+	    acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
+		if (acl)
+		{
+			len_p = 1000;
+			if ((str = acl_to_text(acl, &len_p)) != NULL)
+			{
+				if (print)
+					ft_printf("+");
+				free(str);
+				ret += 1;
+				acl_free(acl);
+			}
+		}
+	}
 #endif
 
 	return (ret);
