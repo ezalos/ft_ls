@@ -140,17 +140,23 @@ class Comparator():
 			err_my = ""
 			err_tr = ""
 			# if my_line != tr_line:
-			for col in range(len(tr_line)):
-				if my_line != tr_line:
-					if my_line[col] != tr_line[col]:
-						err_my += RED + my_line[col] + RESET + " "
-						err_tr += RED + tr_line[col] + RESET + " "
-						  # err += "  " + str(col) + ": " + col_type[col] + "\n"
-						  # err += "\tmy: " + my_line[col] + "\n"
-						  # err += "\ttr: " + tr_line[col] + "\n"
-					else:
-						err_my += GREEN + my_line[col] + RESET + " "
-						err_tr += GREEN + tr_line[col] + RESET + " "
+			if my_line != tr_line:
+				for col in range(len(tr_line)):
+					try:
+						if my_line[col] != tr_line[col]:
+							err_my += RED + my_line[col] + RESET + " "
+							err_tr += RED + tr_line[col] + RESET + " "
+							  # err += "  " + str(col) + ": " + col_type[col] + "\n"
+							  # err += "\tmy: " + my_line[col] + "\n"
+							  # err += "\ttr: " + tr_line[col] + "\n"
+						else:
+							err_my += GREEN + my_line[col] + RESET + " "
+							err_tr += GREEN + tr_line[col] + RESET + " "
+					except IndexError:
+						if len(my_line) < len(tr_line):
+							err_tr += ORANGE + tr_line[col] + RESET + " "
+						else:
+							err_my += ORANGE + my_line[col] + RESET + " "
 				# else:
 				# 	print("      : ", my_lines[line])
 				# 	break
