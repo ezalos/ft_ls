@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:58 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:15:35 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:04:41 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,15 @@ void	print_file_last_modif(struct stat sb)
 		if (no_newline[i] == '\n')
 			no_newline[i] = ' ';
 	time_dic = ft_strsplit(no_newline, ' ');
+	#if __linux__
 	ft_printf("%-5s ", time_dic[TIMESTR_MON]);
 	ft_printf("%2s ", time_dic[TIMESTR_DAY]);
+
+	#elif __MACH__
+	ft_printf("%2s ", time_dic[TIMESTR_DAY]);
+	ft_printf("%-5s ", time_dic[TIMESTR_MON]);
+
+	#endif
 	if (check_file_time(sb.st_mtime) || time_dic[TIMESTR_YEA][0] != '2')
 	{
 		//no need for lonely file
