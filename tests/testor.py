@@ -1,6 +1,7 @@
 import subprocess
 import re
 import time
+import platform
 
 PURPLE = '\033[95m'
 BLUE = '\033[94m'
@@ -12,18 +13,18 @@ BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
 
 month_dic = {
-	"janv." : "Jan",
-	"févr" : "Feb",
-	"mars" : "Mar",
-	"avril" : "Apr",
-	"mai" : "May",
-	"juin" : "Jun",
-	"juil." : "Jul",
-	"août" : "Aug",
-	"sept." : "Sep",
-	"oct." : "Oct",
-	"nov." : "Nov",
-	"déc." : "Dec"
+	"Jan" : ["janv.", "jan"],
+	"Feb" : ["févr" , "fév"],
+	"Mar" : ["mars" , "mar"],
+	"Apr" : ["avril", "avr"],
+	"May" : ["mai"  , "mai"],
+	"Jun" : ["juin" , "jui"],
+	"Jul" : ["juil.", "jul"],
+	"Aug" : ["août" , "aoû"],
+	"Sep" : ["sept.", "sep"],
+	"Oct" : ["oct." , "oct"],
+	"Nov" : ["nov." , "nov"],
+	"Dec" : ["déc.", "déc"]
 }
 
 
@@ -102,8 +103,12 @@ class Comparator():
 			out1 = mine.clean_output(colors=True, white_spaces=True)
 			out2 = them.clean_output(colors=True, white_spaces=True)
 
+			if platform.system() == 'Linux':
+				os_dic = 0
+			else:
+				os_dic = 1
 			for word, initial in month_dic.items():
-				 out2 = out2.replace(word, initial)
+				 out1 = out1.replace(word, initial[os_dic])
 			self.diff_output(out1, out2)
 			print()
 
