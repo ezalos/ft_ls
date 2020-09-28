@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:45:13 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 12:46:41 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		extended_attr(t_sys_files *file)
 
 #elif __MACH__
 
-	size_list = listxattr(file->path, buf_list, 1000);
+	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW);
 
 #endif
 
