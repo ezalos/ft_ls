@@ -154,9 +154,9 @@ class Comparator():
 							err_tr += GREEN + tr_line[col] + RESET + " "
 					except IndexError:
 						if len(my_line) < len(tr_line):
-							err_tr += ORANGE + tr_line[col] + RESET + " "
+							err_tr += YELLOW + tr_line[col] + RESET + " "
 						else:
-							err_my += ORANGE + my_line[col] + RESET + " "
+							err_my += YELLOW + my_line[col] + RESET + " "
 				# else:
 				# 	print("      : ", my_lines[line])
 				# 	break
