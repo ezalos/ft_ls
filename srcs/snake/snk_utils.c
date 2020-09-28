@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   snk_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/28 16:45:31 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/28 16:46:41 by ezalos           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "head.h"
 
-void			increase_speed(t_arena *arena)
+void		increase_speed(t_arena *arena)
 {
 	if (arena->speed > 1)
 	{
@@ -10,7 +22,6 @@ void			increase_speed(t_arena *arena)
 	}
 	else
 		arena->speed = 1;
-	//ft_printf("\t\t\tSpeed %.6f", arena->speed);
 }
 
 void		change_type(t_arena *arena, t_coor *change, char type)

@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:47:22 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 09:47:26 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 17:11:43 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int		one_level(t_sys_files *unix_file)
 {
 	t_rbt			*node = NULL;
 
-	if (IS_FILE_DIR(unix_file->statbuf))//	IS DIR
+	if (IS_FILE_DIR(unix_file->statbuf))
 		node = list_files(unix_file);
-	else if (unix_file->parent == NULL)//	lonely file
+	else if (unix_file->parent == NULL)
 	{
 		if (parse_get("time"))
 			node = tree_insert_func(node, unix_file, &sort_files_time);

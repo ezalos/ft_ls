@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   snake.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/28 16:40:40 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/28 16:40:59 by ezalos           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "head.h"
 
 void		play_game(t_arena *arena)
@@ -13,7 +25,7 @@ void		play_game(t_arena *arena)
 	ft_printf("Sorry you lost baby....\n");
 }
 
-int 		snake(void)
+int			snake(void)
 {
 	t_arena	arena;
 

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   snk_print.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/28 16:47:02 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/28 16:47:27 by ezalos           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "head.h"
 
 void	snk_print_pxl(int type)
 {
-	if      (type == SNK_FOOD)
+	if (type == SNK_FOOD)
 		ft_printf("%~{b255;155;155}");
 	else if (type == SNK_SNAKE)
 		ft_printf("%~{b155;255;155}");
@@ -33,7 +45,7 @@ void	snk_update_pxl(int row, int col, int type)
 	ft_place_cursor(0, 0);
 }
 
-void	snk_print(t_arena* arena)
+void	snk_print(t_arena *arena)
 {
 	int start_row;
 	int start_col;

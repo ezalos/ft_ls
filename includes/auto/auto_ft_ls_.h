@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/28 13:44:29 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:44:29 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/28 17:22:22 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/28 17:22:22 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ int		sort_files_time(void *one, void *two);
 void		init_options_and_arguments(void);
 int		main(int ac, char **av);
 void		play_game(t_arena *arena);
-int 		snake(void);
-t_list		*ft_lstcut(t_list **alst, int indx);
+int		snake(void);
 void		init_snake(t_arena *arena);
 void		init_board(t_arena *arena);
 void		fast_terminal(float time, int size, int on_off);
 void		cheat_func(t_arena *arena);
-int 		get_input(t_arena *arena);
+int		input_move(t_arena *arena, int input);
+int		get_input(t_arena *arena);
 void		snk_print_pxl(int type);
 void		snk_update_pxl(int row, int col, int type);
-void		snk_print(t_arena* arena);
+void		snk_print(t_arena *arena);
 void		get_bigger(t_arena *arena, t_coor add_spot);
 char		check_move(t_coor *new, t_coor *old, t_arena *arena);
 void		move_on(t_arena *arena, t_coor check_spot);

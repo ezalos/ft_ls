@@ -6,13 +6,13 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/28 09:50:31 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 17:30:45 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-static int			fill_name(t_sys_files *sys, char *name, char *path)
+static int				fill_name(t_sys_files *sys, char *name, char *path)
 {
 	char			*tmp;
 	int				i;
@@ -41,7 +41,7 @@ static int			fill_name(t_sys_files *sys, char *name, char *path)
 	return (SUCCESS);
 }
 
-static int			file_check(t_sys_files *sys, char *name)
+static int				file_check(t_sys_files *sys, char *name)
 {
 	if (IS_FILE_DIR(sys->statbuf))
 	{
@@ -58,17 +58,14 @@ static int			file_check(t_sys_files *sys, char *name)
 		return (IS_FILE);
 }
 
-t_sys_files			*file_struct(char *name, t_sys_files *parent)
+t_sys_files				*file_struct(char *name, t_sys_files *parent)
 {
-	t_sys_files		*sys;
+	t_sys_files			*sys;
 
 	sys = ft_memalloc(sizeof(t_sys_files));
 	sys->parent = parent;
 	if (parent)
-	{
 		fill_name(sys, name, parent->path);
-
-	}
 	else
 		fill_name(sys, name, NULL);
 	if (lstat(sys->path, &sys->statbuf) != 0)
@@ -83,13 +80,30 @@ t_sys_files			*file_struct(char *name, t_sys_files *parent)
 	return (sys);
 }
 
-t_rbt				*list_files(t_sys_files *daddy)
+static t_rbt			*file_routine(t_sys_files *daddy, t_rbt *node,
+							struct dirent *file_infos)
 {
-	t_rbt			*node = NULL;
 	t_sys_files		*file;
-	DIR				*directory_infos = NULL;
+
+	if (parse_get("all") || file_infos->d_name[0] != '.')
+	{
+		file = file_struct(file_infos->d_name, daddy);
+		if (parse_get("time"))
+			node = tree_insert_func(node, file, &sort_files_time);
+		else
+			node = tree_insert_func(node, file, &sort_files_alpha);
+	}
+	return (node);
+}
+
+t_rbt					*list_files(t_sys_files *daddy)
+{
+	t_rbt			*node;
+	DIR				*directory_infos;
 	struct dirent	*file_infos;
 
+	node = NULL;
+	directory_infos = NULL;
 	directory_infos = opendir(daddy->path);
 	if (directory_infos)
 	{
@@ -97,14 +111,7 @@ t_rbt				*list_files(t_sys_files *daddy)
 		if (file_infos)
 			while (file_infos)
 			{
-				if (parse_get("all") || file_infos->d_name[0] != '.')
-				{
-					file = file_struct(file_infos->d_name, daddy);
-					if (parse_get("time"))
-						node = tree_insert_func(node, file, &sort_files_time);
-					else
-						node = tree_insert_func(node, file, &sort_files_alpha);
-				}
+				node = file_routine(daddy, node, file_infos);
 				file_infos = readdir(directory_infos);
 			}
 		else

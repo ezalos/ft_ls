@@ -170,8 +170,10 @@ class Comparator():
 		self.launch()
 
 if __name__ == "__main__":
-	arguments = ['-r', '-a']#-l -R, '-t'
-	folders = ["~", "/", ".", "tests", "tests/types", "tests/dates", "tests/rights"]
+	arguments = ['']#-l -R, '-t'
+	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights"]
 	# folders = ["tests/dates"]
-	test = Comparator("./ft_ls -l", "LANG=C ls -l", arguments, folders)
+	test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	test.pipeline()
+	# test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
+	# test.pipeline()
