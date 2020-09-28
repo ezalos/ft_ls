@@ -27,6 +27,8 @@ You can find the subject in the directory of the same name
 * ```-l```  Will list files in columns
   * ```total BLOCKS```
 	* For each directory that is listed, preface the files with a line `total BLOCKS`, where BLOCKS is the total disk allocation for all files in that directory.
+	* Each block is 512B and ls give the total size in K
+	* Total block_size = Sum(files.block_size * 512) / 1024
   * ```file type and rights```
 	* resource : https://en.wikipedia.org/wiki/File-system_permissions#Notation_of_traditional_Unix_permissions
   * ```number of links```

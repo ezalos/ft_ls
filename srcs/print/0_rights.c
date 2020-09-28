@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 11:40:37 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 12:45:13 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,17 @@ int		extended_attr(t_sys_files *file)
 	// int			len;
 
 	ft_bzero(buf_list, 1000);
+
+#if __linux__
+
 	size_list = llistxattr(file->path, buf_list, 1000);
+
+#elif __MACH__
+
+	size_list = listxattr(file->path, buf_list, 1000);
+
+#endif
+
 	if (size_list)
 		return (1);
 	return (0);
