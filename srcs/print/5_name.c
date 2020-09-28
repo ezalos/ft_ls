@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   auto_ft_ls.h                                       :+:      :+:    :+:   */
+/*   5_name.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/28 12:05:13 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:05:13 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/26 20:01:56 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/26 20:02:59 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AUTO_FT_LS_H
-# define AUTO_FT_LS_H
+#include "head.h"
 
-# include "auto/auto_ft_ls_.h"
-
-#endif
+void	print_file_name(char *name)
+{
+	ft_printf("%s", name);
+}

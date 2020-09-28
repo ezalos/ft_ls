@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   auto_ft_ls.h                                       :+:      :+:    :+:   */
+/*   1_links.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/28 12:05:13 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:05:13 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/26 20:00:46 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/26 20:00:53 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AUTO_FT_LS_H
-# define AUTO_FT_LS_H
+#include "head.h"
 
-# include "auto/auto_ft_ls_.h"
+void	print_file_link_count(struct stat sb)
+{
+	int			shift;
 
-#endif
+	shift = get_format(NULL, FORMAT_F_LINK);
+	ft_printf("%*ld ", shift, (long) sb.st_nlink);
+}

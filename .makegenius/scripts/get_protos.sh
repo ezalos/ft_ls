@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/22 19:02:24 by ldevelle          #+#    #+#              #
-#    Updated: 2020/04/18 17:44:14 by ezalos           ###   ########.fr        #
+#    Updated: 2020/09/28 09:58:38 by ezalos           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,30 +31,28 @@
 # $4 is Project name, fore recursive Makegenius compatibility
 
 path=includes/auto/
-prefix=auto
-delim=_
-extension_header=_H
-extension_file=.h
-
-common=$prefix$delim$4$delim$1
-
-name=$path$common$extension_file
-head=$common$extension_header
+prefix=auto_
+yy=_
+suffix=_H
+extension=.h
+anti_dot=$(echo "${4//.}")
+name=$path$prefix$4$yy$1$extension
+spe=$prefix$anti_dot$yy$1$suffix
 
 mkdir -p $path
 # rm -rf $name
 
 if [ "$(uname)" == "Darwin" ]; then
 	echo -n "#ifndef " > $name
-	printf $head | awk '{ print toupper($1) }' >> $name
+	printf $spe | awk '{ print toupper($1) }' >> $name
 	echo -n "# define " >> $name
-	printf $head | awk '{ print toupper($1) }' >> $name
+	printf $spe | awk '{ print toupper($1) }' >> $name
 	echo "" >> $name
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	echo -n "#ifndef " > $name
-	printf $head | awk '{ print toupper($1) }' >> $name
+	printf $spe | awk '{ print toupper($1) }' >> $name
 	echo -n "# define " >> $name
-	printf $head | awk '{ print toupper($1) }' >> $name
+	printf $spe | awk '{ print toupper($1) }' >> $name
 	echo "" >> $name
 fi
 
@@ -63,7 +61,7 @@ grep -v "static" |
 grep -A1 "^[^$(printf '\t')]" |
 grep -e "(" -e ")" |
 grep -v -e '{' -e '}' -e "/--" -e '#' -e ";" -e "^$" |
-grep -v -e ":+:" -e "+:+" -e "\*\* " -e "\*\*\$" -e "^\*\*" -e "\$\$" -e "{" -e "}" -e "/\\*" -e "\\*/" -e "--" -e while -e else -e "\*\\\\" -e if -e ";" -e "#include " -e "=" -e "->" -e "//" |
+grep -v -e ":+:" -e "+:+" -e "\*\* " -e "\*\*\$" -e "^\*\*" -e "\$\$" -e "{" -e "}" -e "/\\*" -e "\\*/" -e "--" -e "while " -e "else " -e "\*\\\\" -e "if " -e ";" -e "#include " -e "=" -e "->" -e "//" |
 tr -s '\t' '\t\t' >> $name
 
 

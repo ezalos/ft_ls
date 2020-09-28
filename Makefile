@@ -6,7 +6,7 @@
 #    By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 15:04:16 by ldevelle          #+#    #+#              #
-#    Updated: 2020/05/06 19:55:23 by ezalos           ###   ########.fr        #
+#    Updated: 2020/09/27 18:23:12 by ezalos           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,10 @@ MASTER		= 	srcs/
 
 $(shell mkdir -p $(MASTER))
 
+
 #AUTO_HEAD	=	$(MAIN_FOLD:%=auto/auto_%.h)
-AUTO_HEAD	=	auto_$(NAME).h
+AUTO_HEAD	=	auto/auto_$(NAME)_.h
+AUTO_HEAD	+=	auto_$(NAME).h
 
 HEAD		=	$(HEADERS:%=$(HEAD_DIR)%)
 
@@ -50,6 +52,11 @@ OBJS	= $(PAT:$(MASTER)%.c=$(DIR_OBJ)%.o)
 ARG 	?= ldevelle
 MSG		?= "Automated commit message!"
 
+
+#PREPARATION OF OBJECT FOLDER
+DIR_PREP = $(shell find $(MASTER) -type d -exec echo {} \; | sed 's~$(MASTER)~$(DIR_OBJ)~g')
+$(shell mkdir -p $(DIR_PREP))
+$(shell find $(DIR_OBJ) -type d -exec touch {}/.gitkeep \;)
 
 SUPPORTED_COMMANDS := run
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
@@ -178,8 +185,9 @@ $(NAME):	$(LIB) $(OBJS) $(HEAD_DIR)
 endif
 
 DIR_PREP = $(shell find $(MASTER) -type d -exec echo {} \; | sed 's~$(MASTER)~$(DIR_OBJ)~g')
+$(shell mkdir -p $(DIR_PREP))
+
 $(DIR_OBJ)%.o:$(MASTER)%.c $(HEAD) Makefile
-	@mkdir -p $(DIR_OBJ)
 	@$(call run_and_test, $(CC) $(CFLAGS) $(HEADERS_DIRECTORIES) -o $@ -c $<)
 
 $(LIB): FORCE

@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/25 18:22:41 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 11:21:47 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,23 @@ typedef	struct			s_sys_files
 
 }						t_sys_files;
 
+# include "snake.h"
 # include "auto_ft_ls.h"
+
+#include <sys/xattr.h>
+
+#define TIMESTR_MON		1
+#define TIMESTR_DAY		2
+#define TIMESTR_HOU		3
+#define TIMESTR_YEA		4
+
+#define		FORMAT_RIGHTS		0
+#define		FORMAT_F_LINK		1
+#define		FORMAT_U_NAME		2
+#define		FORMAT_G_NAME		3
+#define		FORMAT_F_SIZE		4
+#define		FORMAT_T_HOUR		5
+#define		FORMAT_T_YEAR		6
 
 #define		CURRENT_DIR			"."
 #define		CURRENT_DIR_LEN		1

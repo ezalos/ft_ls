@@ -6,112 +6,14 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/24 16:09:10 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 11:29:00 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-#if __linux__
-
-int		sort_files_alpha(void *one, void *two)
+void	init_options_and_arguments(void)
 {
-	char	*name_one;
-	char	*name_two;
-
-	name_one = ((t_sys_files*)one)->name_lowercase;
-	name_two = ((t_sys_files*)two)->name_lowercase;
-
-	if (*name_one == '.')
-		name_one++;
-	if (*name_two == '.')
-		name_two++;
-	if (((t_sys_files*)one)->check == IS_UP_DIR)
-	{
-		name_one++;
-		if (((t_sys_files*)two)->check == IS_CURRENT_DIR)
-			return (1);
-	}
-	if (((t_sys_files*)two)->check == IS_UP_DIR)
-	{
-		name_two++;
-		if (((t_sys_files*)one)->check == IS_CURRENT_DIR)
-			return (-1);
-	}
-
-	return (ft_strcmp(name_one, name_two));
-}
-
-#elif __MACH__
-
-int		sort_files_alpha(void *one, void *two)
-{
-	char	*name_one;
-	char	*name_two;
-
-	name_one = ((t_sys_files*)one)->d_name;
-	name_two = ((t_sys_files*)two)->d_name;
-
-	return (ft_strcmp(name_one, name_two));
-}
-#endif
-
-int		sort_files_time(void *one, void *two)
-{
-	long long	time_one;
-	long long	time_two;
-
-	time_one = ((t_sys_files*)one)->statbuf.st_mtime;
-	time_two = ((t_sys_files*)two)->statbuf.st_mtime;
-
-	if (time_one < time_two)
-		return (1);
-	else if (time_one == time_two)
-		return (sort_files_alpha(one, two));
-	return (-1);
-}
-
-int		recursive(t_rbt *node)
-{
-	t_sys_files		*file;
-	int				ret;
-
-	ret = 0;
-	file = node->content;
-	if (file && (file->check == IS_DIR))
-		ret = one_level(file);
-	return (ret);
-}
-
-int		one_level(t_sys_files *unix_file)
-{
-	t_rbt			*node = NULL;
-
-	if (IS_FILE_DIR(unix_file->statbuf))//	IS DIR
-		node = list_files(unix_file);
-	else if (unix_file->parent == NULL)//	lonely file
-	{
-		if (parse_get("time"))
-			node = tree_insert_func(node, unix_file, &sort_files_time);
-		else
-			node = tree_insert_func(node, unix_file, &sort_files_alpha);
-	}
-	else
-		return (0);
-	if (node)
-	{
-		ls_output(node);
-		if (parse_get("recursive"))
-			tree_inorder(node, &recursive);
-		//TODO: free all
-	}
-	return (1);
-}
-
-int		main(int ac, char **av)
-{
-	t_sys_files	*file = NULL;
-
 	parse_new("ls", PROGRAME_DESCRIPTION);
 
 	parse_add_option('R', "recursive",	"Recursively visit each directory");
@@ -119,21 +21,33 @@ int		main(int ac, char **av)
 	parse_add_option('l', "list",		"List file information");
 	parse_add_option('a', "all",		"Show hidden files");
 	parse_add_option('t', "time",		"Sort files by time");
+	parse_add_option('s', "human-size",	"Display sizes with units");
+	parse_add_option('g', "game",		"Launch a game of snake ;)");
 	parse_add_option('h', "help",		"Display Usage (this message)");
 
 	parse_add_arg("PATH", "List sorted information about the content of the \
 directory. Default PATH is current directory.");
+}
 
+
+int		main(int ac, char **av)
+{
+	t_sys_files	*file = NULL;
+
+	init_options_and_arguments();
 	if (parse_args(ac, av) == FAILURE)
 		return (0);
 
 	if (parse_get("help") != NULL)
 		return (parse_usage());
+	else if (parse_get("game"))
+		return (snake());
 	if (parse_get("PATH") != NULL)
 		file = file_struct(parse_get("PATH")->raw[0], NULL);
 	else
 		file = file_struct(DEFAULT_ARGUMENT, NULL);
 	if (file)
 		one_level(file);
+
 	return (0);
 }
