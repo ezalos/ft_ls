@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:50:34 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 09:50:50 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:40:53 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void				update_format(t_sys_files *file, t_ls_format *format)
 	struct group	*grp;
 
 	// rights
-	if (extended_attr(file))
+	if (extended_attr(file, FALSE))
 		format->rights = 1;
 
 	// file links

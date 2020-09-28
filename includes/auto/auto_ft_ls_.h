@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/28 12:05:13 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:05:13 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/28 13:44:29 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/28 13:44:29 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		print_ls(t_rbt *node);
 int		print_ls_l(t_rbt *node);
 void		ls_output(t_rbt *node);
 void		print_file_type(struct stat sb);
-int		extended_attr(t_sys_files *file);
+int		extended_attr(t_sys_files *file, uint8_t print);
 void		print_file_mode(struct stat sb, t_sys_files *file);
 uint32_t		read_magic_number(char *path);
 void		print_file_color(struct stat sb, char *path);

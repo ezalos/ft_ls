@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:39:16 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:44:24 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	print_file_type(struct stat sb)
 #include <sys/acl.h>
 #endif
 
-int		extended_attr(t_sys_files *file)
+int		extended_attr(t_sys_files *file, uint8_t print)
 {
 	char		buf_list[1000];
 	// char		buf_attr[1000];
@@ -53,7 +53,8 @@ int		extended_attr(t_sys_files *file)
 	size_list = llistxattr(file->path, buf_list, 1000);
 	if (size_list)
 	{
-		ft_printf("+");
+		if (print)
+			ft_printf("+");
 		ret += 1;
 	}
 
@@ -62,14 +63,16 @@ int		extended_attr(t_sys_files *file)
     acl = acl_get_link_np(file->path , ACL_TYPE_ACCESS);
 	if (acl)
 	{
-		ft_printf("+");
+		if (print)
+			ft_printf("+");
 		ret += 1;
 		acl_free(acl);
 	}
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW);
 	if (size_list)
 	{
-		ft_printf("@");
+		if (print)
+			ft_printf("@");
 		ret += 1;
 	}
 
@@ -123,7 +126,7 @@ void	print_file_mode(struct stat sb, t_sys_files *file)
 		else
 			ft_printf("%c", (1 & (mode >> i)) ? 'x' : '-');
 	}
-	if (extended_attr(file) && get_format(NULL, FORMAT_RIGHTS))
+	if (extended_attr(file, TRUE) && get_format(NULL, FORMAT_RIGHTS))
 		ft_printf(" ");
 	ft_printf(" ");
 }
