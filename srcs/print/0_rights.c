@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:38:35 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:39:16 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		extended_attr(t_sys_files *file)
 	}
 
 #elif __MACH__
-	acl_t	*acl;
+	acl_t	acl;
     acl = acl_get_link_np(file->path , ACL_TYPE_ACCESS);
 	if (acl)
 	{
