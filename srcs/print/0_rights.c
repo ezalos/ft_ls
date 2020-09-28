@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:14:37 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 15:15:38 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,6 @@ void	print_file_mode(struct stat sb, t_sys_files *file)
 			ft_printf("%c", (1 & (mode >> i)) ? 'x' : '-');
 	}
 	if (!extended_attr(file, TRUE))
-		ft_printf("%*s", get_format(NULL, FORMAT_RIGHTS));
+		ft_printf("%*s", get_format(NULL, FORMAT_RIGHTS), "");
 	ft_printf(" ");
 }
