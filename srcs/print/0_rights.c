@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:33:39 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:35:56 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		extended_attr(t_sys_files *file)
 
 #elif __MACH__
 	acl_t	*acl;
-    acl = acl_get_file(const char *path_p, acl_type_t type);
+    acl = acl_get_file_np(file->path , ACL_TYPE_ACCESS);
 	if (acl)
 	{
 		ft_printf("+");
