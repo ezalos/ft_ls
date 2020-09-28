@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:46:41 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:33:39 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	print_file_type(struct stat sb)
 		ft_printf("?");//unknown?
 }
 
+#include <sys/types.h>
+#if __MACH__
+#include <sys/acl.h>
+#endif
+
 int		extended_attr(t_sys_files *file)
 {
 	char		buf_list[1000];
@@ -39,22 +44,37 @@ int		extended_attr(t_sys_files *file)
 	ssize_t		size_list;
 	// ssize_t		size_attr;
 	// int			len;
+	int			ret;
 
 	ft_bzero(buf_list, 1000);
-
+	ret = 0;
 #if __linux__
 
 	size_list = llistxattr(file->path, buf_list, 1000);
+	if (size_list)
+	{
+		ft_printf("+");
+		ret += 1;
+	}
 
 #elif __MACH__
-
+	acl_t	*acl;
+    acl = acl_get_file(const char *path_p, acl_type_t type);
+	if (acl)
+	{
+		ft_printf("+");
+		ret += 1;
+	}
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW);
+	if (size_list)
+	{
+		ft_printf("@");
+		ret += 1;
+	}
 
 #endif
 
-	if (size_list)
-		return (1);
-	return (0);
+	return (ret);
 	// ft_printf("List size: %d", size_list);
 	// len = 0;
 	// while (len < (int)size_list)
@@ -102,9 +122,7 @@ void	print_file_mode(struct stat sb, t_sys_files *file)
 		else
 			ft_printf("%c", (1 & (mode >> i)) ? 'x' : '-');
 	}
-	if (extended_attr(file))
-		ft_printf("+");
-	else if (get_format(NULL, FORMAT_RIGHTS))
+	if (extended_attr(file) && get_format(NULL, FORMAT_RIGHTS))
 		ft_printf(" ");
 	ft_printf(" ");
 }
