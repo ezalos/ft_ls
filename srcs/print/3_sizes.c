@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:49:16 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 12:21:22 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/28 13:19:08 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	print_folder_size(t_rbt *node)
 	long long	sum = tree_inorder_long_long(node, &tree_sum_size_inorder);
 
 	ft_printf("total ");
+	#if __linux__
 	print_file_size(sum / 1024, FALSE);
+	#elif __MACH__
+	print_file_size(sum / 512, FALSE);
+	#endif
 	ft_printf("\n");
 
 }
