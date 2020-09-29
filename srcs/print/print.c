@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 16:57:42 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 17:01:31 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	ls_output(t_rbt *node)
 	{
 		if (file->parent)
 			get_format(&file->parent->format, 0);
-		print_folder_size(node);
+		if (!file->empty_folder_case || OS_IS_LINUX)
+			print_folder_size(node);
 		if (!file->empty_folder_case)
 		{
 			if (!parse_get("reverse"))
