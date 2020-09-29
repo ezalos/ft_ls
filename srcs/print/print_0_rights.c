@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 14:49:40 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 17:47:36 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,9 @@ void	print_file_type(struct stat sb)
 
 int		extended_attr(t_sys_files *file, uint8_t print)
 {
-	// char		buf_list[1000];
-	// ssize_t		size_list;
 	int			ret;
 
-	// ft_bzero(buf_list, 1000);
 	ret = 0;
-	// size_list = ;
 	if (llistxattr(file->path, NULL, 0) > 0)
 	{
 		if (print)
@@ -68,8 +64,6 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 {
 	int			ret;
 	acl_t		acl;
-	// char 		*str;
-	// ssize_t 	len_p;
 
 	ret = 0;
 	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) > 0)
@@ -80,18 +74,13 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	}
 	else
 	{
-	    acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
+		acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
 		if (acl)
 		{
-			// len_p = 1000;
-			// if ((str = acl_to_text(acl, &len_p)) != NULL)
-			// {
-				if (print)
-					ft_printf("+");
-				// free(str);
-				ret += 1;
-				acl_free(acl);
-			// }
+			if (print)
+				ft_printf("+");
+			ret += 1;
+			acl_free(acl);
 		}
 	}
 	return (ret);
@@ -101,15 +90,14 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 
 void	print_file_mode(struct stat sb, t_sys_files *file)
 {
-	int mode = sb.st_mode;
-	int step;
+	int mode;
 	int i;
 
-	step = 3;
-	i = 3 * step;
+	mode = sb.st_mode;
+	i = 3 * 3;
 	while (i > 0)
 	{
-		i -= step;
+		i -= 3;
 		if (4 & (mode >> i))
 			ft_printf("r");
 		else

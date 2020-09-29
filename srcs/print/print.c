@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 17:01:31 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 17:43:09 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int		print_ls(t_rbt *node)
 {
-	t_sys_files *file = node->content;
+	t_sys_files *file;
 
+	file = node->content;
 	if (parse_get("recursive"))
 		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
 			return (0);
@@ -28,11 +29,9 @@ int		print_ls(t_rbt *node)
 
 int		print_ls_l(t_rbt *node)
 {
-	t_sys_files *file = node->content;
+	t_sys_files *file;
 
-	// if (parse_get("recursive"))
-	// 	if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
-	// 		return (0);
+	file = node->content;
 	print_file_color(file->statbuf, file->path);
 	print_file_type(file->statbuf);
 	ft_printf("%~{}");
@@ -55,7 +54,6 @@ void	ls_output(t_rbt *node)
 	t_sys_files	*file;
 
 	file = node->content;
-	// ft_printf("hello\n");
 	if (parse_get("recursive"))
 	{
 		if (file->parent)
@@ -72,8 +70,7 @@ void	ls_output(t_rbt *node)
 		else if (file->empty_folder_case)
 			ft_printf("%s:\n", file->path);
 	}
-
-	if (parse_get("list"))//TODO: if more than one file
+	if (parse_get("list"))
 	{
 		if (file->parent)
 			get_format(&file->parent->format, 0);

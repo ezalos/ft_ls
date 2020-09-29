@@ -177,8 +177,8 @@ class Comparator():
 				last_index = line
 				if my_lines[line] != tr_lines[line]:
 					self.cut_columns(my_lines[line], tr_lines[line], line)
-				else:
-					print(" " * 8, tr_lines[line])
+				# else:
+				# 	print(" " * 8, tr_lines[line])
 		except IndexError:
 			if len(my_lines) < len(tr_lines):
 				print("Missing lines for mine:")
@@ -280,9 +280,9 @@ class Comparator():
 		self.launch()
 
 if __name__ == "__main__":
-	arguments = ['']#-l -R, '-t'
+	arguments = ['', '-a']#-l -R, '-t'
 	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights", "~"]
-	# folders = ["tests/dates"]
+	folders = ["/"]
 	test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	test.pipeline()
 	# test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)

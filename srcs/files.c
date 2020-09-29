@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/29 15:48:57 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 17:41:26 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,9 @@ static t_rbt			*file_routine(t_sys_files *daddy, t_rbt *node,
 {
 	t_sys_files		*file;
 
-	// ft_printf("NAME: %s\n", file_infos->d_name);
 	if (parse_get("all") || file_infos->d_name[0] != '.')
 	{
 		file = file_struct(file_infos->d_name, daddy);
-		// ft_printf("file ine %p\n", file);
 		if (parse_get("time"))
 			node = tree_insert_func(node, file, &sort_files_time);
 		else
@@ -113,15 +111,11 @@ t_rbt					*list_files(t_sys_files *daddy)
 		if (file_infos)
 			while (file_infos)
 			{
-				// ft_printf("file %p\n", file_infos);
-				// ft_printf("node: %p\n", node);
 				node = file_routine(daddy, node, file_infos);
 				file_infos = readdir(directory_infos);
 			}
 		else
 			perror(ERROR_DIR_READ);
-		// ft_printf("file %p\n", file_infos);
-		// ft_printf("node: %p\n", node);
 		if (closedir(directory_infos) != 0)
 			perror(ERROR_DIR_CLOSE);
 	}
