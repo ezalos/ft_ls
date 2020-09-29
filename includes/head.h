@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/28 11:21:47 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 11:11:10 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,22 @@
 
 #if __linux__
 # include <error.h>
+# define		OS_IS_LINUX		1
 #elif __MACH__
+# define		OS_IS_LINUX		0
+#else
+# define		OS_IS_LINUX		-1
 #endif
 
 # include <string.h>
 //reading rights of file (user/groupe)
 #include <grp.h>
 #include <pwd.h>
+
+#include <sys/types.h>
+#if __MACH__
+#include <sys/acl.h>
+#endif
 
 typedef struct			s_ls_format
 {

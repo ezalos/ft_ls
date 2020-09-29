@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   6_file_link.c                                      :+:      :+:    :+:   */
+/*   print_6_file_link.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:51:33 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 15:34:21 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 10:44:15 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ void	print_file_link(t_sys_files *file)
 
 	if (S_IFLNK == (file->statbuf.st_mode & S_IFMT))
 	{
-		color = 0;
-		if (stat(file->path, &stat_link) != 0 /*SUCCESS*/)
+		color = 1;
+		if (stat(file->path, &stat_link) != 0)
 		{
-			// ft_printf("%s\n", file->path);
-			// perror(ERROR_DIR_STAT);
-			color = 1;
+			color = 0;
 		}
 		ft_bzero(buf, 500);
 		if (readlink(file->path, buf, 500) == -1)

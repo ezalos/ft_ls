@@ -1,12 +1,6 @@
-PAT += 	srcs/print/2_owner.c \
-	srcs/print/1_nb_links.c \
-	srcs/print/5_name.c \
-	srcs/print/print_colors.c \
-	srcs/print/4_time.c \
-	srcs/print/format.c \
-	srcs/print/3_sizes.c \
-	srcs/print/6_file_link.c \
-	srcs/print/0_rights.c \
+PAT += 	srcs/print/print_1_nb_links.c \
+	srcs/print/print_5_name.c \
+	srcs/print/print_0_rights.c \
 	srcs/print/print.c \
 	srcs/main.c \
 	srcs/sorts.c \
@@ -17,4 +11,10 @@ PAT += 	srcs/print/2_owner.c \
 	srcs/snake/snk_move.c \
 	srcs/snake/snk_input.c \
 	srcs/recursive.c \
-	srcs/files.c 
+	srcs/files.c \
+	srcs/print/format.c \
+	srcs/print/print_2_owner.c \
+	srcs/print/print_colors.c \
+	srcs/print/print_6_file_link.c \
+	srcs/print/print_4_time.c \
+	srcs/print/print_3_sizes.c 

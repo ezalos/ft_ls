@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   0_rights.c                                         :+:      :+:    :+:   */
+/*   print_0_rights.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 16:02:23 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 11:14:36 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,33 @@
 void	print_file_type(struct stat sb)
 {
 	if (S_IFBLK == (sb.st_mode & S_IFMT))
-		ft_printf("b");//block device
+		ft_printf("b");
 	else if (S_IFCHR == (sb.st_mode & S_IFMT))
-		ft_printf("c");//character device
+		ft_printf("c");
 	else if (S_IFDIR == (sb.st_mode & S_IFMT))
-		ft_printf("d");//directory
+		ft_printf("d");
 	else if (S_IFIFO == (sb.st_mode & S_IFMT))
-		ft_printf("p");//FIFO/pipe
+		ft_printf("p");
 	else if (S_IFLNK == (sb.st_mode & S_IFMT))
-		ft_printf("l");//symlink
+		ft_printf("l");
 	else if (S_IFREG == (sb.st_mode & S_IFMT))
-		ft_printf("-");//regular file
+		ft_printf("-");
 	else if (S_IFSOCK == (sb.st_mode & S_IFMT))
-		ft_printf("s");//socket
+		ft_printf("s");
 	else
-		ft_printf("?");//unknown?
+		ft_printf("?");
 }
 
-#include <sys/types.h>
-#if __MACH__
-#include <sys/acl.h>
-#endif
+#if __linux__
 
 int		extended_attr(t_sys_files *file, uint8_t print)
 {
 	char		buf_list[1000];
-	// char		buf_attr[1000];
 	ssize_t		size_list;
-	// ssize_t		size_attr;
-	// int			len;
 	int			ret;
 
 	ft_bzero(buf_list, 1000);
 	ret = 0;
-#if __linux__
-
 	size_list = llistxattr(file->path, buf_list, 1000);
 	if (size_list)
 	{
@@ -57,19 +49,32 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 			ft_printf("+");
 		ret += 1;
 	}
+	return (ret);
+}
 
 #elif __MACH__
-// If the file or directory has extended attributes,
-// the permissions field printed by the -l option is followed by a '@' character.
-//
-// Otherwise, if the file or directory has extended security information
-// (such as an access control list), the permissions field printed by
-// the -l option is followed by a '+' character.
 
-	acl_t	acl;
-	char *str;
-	ssize_t len_p;
-	// acl_entry_t entry_p;
+/*
+** If the file or directory has extended attributes,
+** the permissions field printed by the -l option is followed by a '@'
+** character.
+**
+** Otherwise, if the file or directory has extended security information
+** (such as an access control list), the permissions field printed by
+** the -l option is followed by a '+' character.
+*/
+
+int		extended_attr(t_sys_files *file, uint8_t print)
+{
+	char		buf_list[1000];
+	ssize_t		size_list;
+	int			ret;
+	acl_t		acl;
+	// char 		*str;
+	// ssize_t 	len_p;
+
+	ft_bzero(buf_list, 1000);
+	ret = 0;
 	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
 	if (size_list > 0)
 	{
@@ -82,40 +87,21 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 	    acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
 		if (acl)
 		{
-			len_p = 1000;
-			if ((str = acl_to_text(acl, &len_p)) != NULL)
-			{
+			// len_p = 1000;
+			// if ((str = acl_to_text(acl, &len_p)) != NULL)
+			// {
 				if (print)
 					ft_printf("+");
-				free(str);
+				// free(str);
 				ret += 1;
 				acl_free(acl);
-			}
+			// }
 		}
 	}
-#endif
-
 	return (ret);
-	// ft_printf("List size: %d", size_list);
-	// len = 0;
-	// while (len < (int)size_list)
-	// {
-	// 	ft_bzero(buf_attr, 1000);
-	// 	if ((size_attr = lgetxattr(file->path, buf_list + len, buf_attr, 1000)) > 0)
-	// 	{
-	// 		buf_attr[size_attr] = '\0';
-	// 		ft_printf("[%s:", buf_list + len);
-	// 		ft_printf("%d:", size_attr);
-	// 		ft_printf("%.*s]", size_attr, buf_attr);
-	// 	}
-	// 	else
-	// 	{
-	// 		ft_printf("%d:", size_attr);
-	// 		break;
-	// 	}
-	// 	len += ft_strlen(buf_list + len);
-	// }
 }
+
+#endif
 
 void	print_file_mode(struct stat sb, t_sys_files *file)
 {

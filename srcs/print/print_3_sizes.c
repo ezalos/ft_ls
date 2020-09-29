@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   3_sizes.c                                          :+:      :+:    :+:   */
+/*   print_3_sizes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:49:16 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 13:43:40 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 10:52:34 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-void	print_human_size(size_t size, float save)
+void			print_human_size(size_t size, float save)
 {
 	int			shift;
 
@@ -33,7 +33,7 @@ void	print_human_size(size_t size, float save)
 	}
 }
 
-void	print_file_size(size_t file_size, uint8_t format)
+void			print_file_size(size_t file_size, uint8_t format)
 {
 	long long	size;
 	float		save;
@@ -60,23 +60,23 @@ void	print_file_size(size_t file_size, uint8_t format)
 
 long long		tree_sum_size_inorder(t_rbt *root)
 {
-	long long		value = 0;
+	long long	value;
 
+	value = 0;
 	if (root != NULL)
 		value += ((t_sys_files*)root->content)->statbuf.st_blocks * 512;
-	return value;
+	return (value);
 }
 
-void	print_folder_size(t_rbt *node)
+void			print_folder_size(t_rbt *node)
 {
-	long long	sum = tree_inorder_long_long(node, &tree_sum_size_inorder);
+	long long	sum;
 
+	sum = tree_inorder_long_long(node, &tree_sum_size_inorder);
 	ft_printf("total ");
-	#if __linux__
-	print_file_size(sum / 1024, FALSE);
-	#elif __MACH__
-	print_file_size(sum / 512, FALSE);
-	#endif
+	if (OS_IS_LINUX)
+		print_file_size(sum / 1024, FALSE);
+	else
+		print_file_size(sum / 512, FALSE);
 	ft_printf("\n");
-
 }
