@@ -74,6 +74,7 @@ class Comparator():
 		self.possible_arguments = possible_arguments
 		self.folders = folders
 		self.args = ""
+		self.list_of_errors = []
 
 	def prepare_args(self):
 		for folder in self.folders:
@@ -121,6 +122,10 @@ class Comparator():
 		print("SPEED MEAN {:<3.0f}%".format(them_speed_mean * 100 / mine_speed_mean),
 				"\n\tTime mine: ", mine_speed_mean,
 				"\n\tTime them: ", them_speed_mean)
+		# with open("tests/list_of_errors.py", "r+") as f:
+		# 	f.seek(0)
+		# 	f.truncate()
+		# 	f.write("list_of_errors = " + self.list_of_errors)
 
 	def cut_folders(self, out1, out2):
 		my_folders = out1.split("\n\n")
@@ -133,22 +138,27 @@ class Comparator():
 			max_len_folders = len(my_folders)
 		else:
 			max_len_folders = len(my_folders)
-		for folder in range(max_len_folders):
-			try:
+		try:
+			for folder in range(max_len_folders):
+				last_index = folder
 				if my_folders[folder] != tr_folders[folder]:
 					if (max_len_folders > 1):
-						print("ERROR for my_folder: ", my_folders[folder].split("\n")[0])
-						print("ERROR for tr_folder: ", tr_folders[folder].split("\n")[0])
+						self.list_of_errors.append(my_folders[folder].split("\n")[0])
+						# print("ERROR for my_folder: ", my_folders[folder].split("\n")[0])
+						print("ERROR for folder: ", tr_folders[folder].split("\n")[0][:-2])
 					self.cut_lines(my_folders[folder], tr_folders[folder])
-			except IndexError:
-				if len(my_folders) < len(tr_folders):
-					print("Missing folders for mine:")
-					for folder in range(max_len_folders):
-						print(YELLOW + tr_folders[folder] + RESET + " ")
-				else:
-					print("Excess folders for mine")
-					for folder in range(max_len_folders):
-						print(YELLOW + my_folders[folder] + RESET + " ")
+		except IndexError:
+			return None
+			if len(my_folders) < len(tr_folders):
+				print("Missing folders for mine:")
+				for folder in range(last_index, max_len_folders):
+					print("Them: ", folder, "/", max_len_folders)
+					print(YELLOW + tr_folders[folder] + RESET + "\n")
+			else:
+				print("Excess folders for mine")
+				for folder in range(last_index, max_len_folders):
+					print("Mine: ", folder, "/", max_len_folders)
+					print(YELLOW + my_folders[folder] + RESET + "\n")
 
 
 	def cut_lines(self, out1, out2):
@@ -273,7 +283,7 @@ if __name__ == "__main__":
 	arguments = ['']#-l -R, '-t'
 	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights", "~"]
 	# folders = ["tests/dates"]
-	test = Comparator("./ft_ls -laR", "LANG=C ls -laR", arguments, folders)
+	test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	test.pipeline()
 	# test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	# test.pipeline()

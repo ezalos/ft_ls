@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:49:16 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 10:52:34 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 16:48:15 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ void			print_folder_size(t_rbt *node)
 
 	sum = tree_inorder_long_long(node, &tree_sum_size_inorder);
 	ft_printf("total ");
-	if (OS_IS_LINUX)
+	if (((t_sys_files*)node->content)->empty_folder_case)
+		ft_printf("0");
+	else if (OS_IS_LINUX)
 		print_file_size(sum / 1024, FALSE);
 	else
 		print_file_size(sum / 512, FALSE);
