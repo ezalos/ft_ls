@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 16:50:55 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 16:57:42 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	ls_output(t_rbt *node)
 			else if (!OS_IS_LINUX && file->parent->parent)
 				ft_printf("%s:\n", file->parent->path);
 		}
+		else if (file->empty_folder_case)
+			ft_printf("%s:\n", file->path);
 	}
 
 	if (parse_get("list"))//TODO: if more than one file
