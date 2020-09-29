@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:46:30 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/28 16:39:23 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 13:07:13 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,20 @@ int		sort_files_alpha(void *one, void *two)
 	// 	name_one++;
 	// if (*name_two == '.')
 	// 	name_two++;
-	if (((t_sys_files*)one)->check == IS_UP_DIR)
-	{
-		name_one++;
-		if (((t_sys_files*)two)->check == IS_CURRENT_DIR)
-			return (1);
-	}
-	if (((t_sys_files*)two)->check == IS_UP_DIR)
-	{
-		name_two++;
-		if (((t_sys_files*)one)->check == IS_CURRENT_DIR)
-			return (-1);
-	}
+	// if (((t_sys_files*)one)->check == IS_UP_DIR)
+	// {
+	// 	name_one++;
+	// 	if (((t_sys_files*)two)->check == IS_CURRENT_DIR)
+	// 		return (1);
+	// 	// return (-1);
+	// }
+	// if (((t_sys_files*)two)->check == IS_UP_DIR)
+	// {
+	// 	name_two++;
+	// 	if (((t_sys_files*)one)->check == IS_CURRENT_DIR)
+	// 		return (-1);
+	// 	// return (1);
+	// }
 	return (ft_strcmp(name_one, name_two));
 }
 

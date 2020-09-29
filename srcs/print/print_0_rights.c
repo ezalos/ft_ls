@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 11:14:36 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 14:49:40 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ void	print_file_type(struct stat sb)
 
 int		extended_attr(t_sys_files *file, uint8_t print)
 {
-	char		buf_list[1000];
-	ssize_t		size_list;
+	// char		buf_list[1000];
+	// ssize_t		size_list;
 	int			ret;
 
-	ft_bzero(buf_list, 1000);
+	// ft_bzero(buf_list, 1000);
 	ret = 0;
-	size_list = llistxattr(file->path, buf_list, 1000);
-	if (size_list)
+	// size_list = ;
+	if (llistxattr(file->path, NULL, 0) > 0)
 	{
 		if (print)
 			ft_printf("+");
@@ -66,17 +66,13 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 
 int		extended_attr(t_sys_files *file, uint8_t print)
 {
-	char		buf_list[1000];
-	ssize_t		size_list;
 	int			ret;
 	acl_t		acl;
 	// char 		*str;
 	// ssize_t 	len_p;
 
-	ft_bzero(buf_list, 1000);
 	ret = 0;
-	size_list = listxattr(file->path, buf_list, 1000, XATTR_NOFOLLOW | XATTR_SHOWCOMPRESSION);
-	if (size_list > 0)
+	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) > 0)
 	{
 		if (print)
 			ft_printf("@");
