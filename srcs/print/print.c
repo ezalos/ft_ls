@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 11:20:43 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/29 12:39:13 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int		print_ls_l(t_rbt *node)
 {
 	t_sys_files *file = node->content;
 
-	if (parse_get("recursive"))
-		if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
-			return (0);
+	// if (parse_get("recursive"))
+	// 	if (file->check == IS_CURRENT_DIR || file->check == IS_UP_DIR)
+	// 		return (0);
 	print_file_color(file->statbuf, file->path);
 	print_file_type(file->statbuf);
 	ft_printf("%~{}");

@@ -91,6 +91,8 @@ class Comparator():
 		mine = BinCute(self.my_bin)
 		them = BinCute(self.tr_bin)
 
+		mine_speed_mean = 0
+		them_speed_mean = 0
 		for arg in self.prepare_args():
 			mine.prepare_command(arg)
 			them.prepare_command(arg)
@@ -99,7 +101,10 @@ class Comparator():
 
 			mine.launch()
 			them.launch()
+			print("SPEED {:<3.0f}%".format(them.time * 100 / mine.time), "Time mine: ", mine.time, " Time them ", them.time)
 
+			mine_speed_mean += mine.time
+			them_speed_mean += them.time
 			out1 = mine.clean_output(colors=True, white_spaces=True)
 			out2 = them.clean_output(colors=True, white_spaces=True)
 
@@ -109,8 +114,102 @@ class Comparator():
 				os_dic = 1
 			for word, initial in month_dic.items():
 				 out1 = out1.replace(word, initial[os_dic])
-			self.diff_output(out1, out2)
+			# self.diff_output(out1, out2)
+			self.cut_folders(out1, out2)
 			print()
+		print("SPEED MEAN {:<3.0f}%".format(them_speed_mean * 100 / mine_speed_mean),
+				"\n\tTime mine: ", mine_speed_mean,
+				"\n\tTime them: ", them_speed_mean)
+
+	def cut_folders(self, out1, out2):
+		my_folders = out1.split("\n\n")
+		tr_folders = out2.split("\n\n")
+		if len(my_folders) < len(tr_folders):
+			print("Mine has", len(my_folders) - len(tr_folders), "folders missing")
+			max_len_folders = len(tr_folders)
+		elif len(my_folders) > len(tr_folders):
+			print("Mine has", len(tr_folders) - len(my_folders), "folders excess")
+			max_len_folders = len(my_folders)
+		else:
+			max_len_folders = len(my_folders)
+		for folder in range(max_len_folders):
+			try:
+				if my_folders[folder] != tr_folders[folder]:
+					if (max_len_folders > 1):
+						print("ERROR for my_folder: ", my_folders[folder].split("\n")[0])
+						print("ERROR for tr_folder: ", tr_folders[folder].split("\n")[0])
+					self.cut_lines(my_folders[folder], tr_folders[folder])
+			except IndexError:
+				if len(my_folders) < len(tr_folders):
+					print("Missing folders for mine:")
+					for folder in range(max_len_folders):
+						print(YELLOW + tr_folders[folder] + RESET + " ")
+				else:
+					print("Excess folders for mine")
+					for folder in range(max_len_folders):
+						print(YELLOW + my_folders[folder] + RESET + " ")
+
+
+	def cut_lines(self, out1, out2):
+		my_lines = out1.split("\n")
+		tr_lines = out2.split("\n")
+		if len(my_lines) < len(tr_lines):
+			print("Mine has", len(my_lines) - len(tr_lines), "lines missing")
+			max_len_lines = len(tr_lines)
+		elif len(my_lines) > len(tr_lines):
+			print("Mine has", len(tr_lines) - len(my_lines), "lines excess")
+			max_len_lines = len(my_lines)
+		else:
+			max_len_lines = len(my_lines)
+		try:
+			for line in range(max_len_lines):
+				last_index = line
+				if my_lines[line] != tr_lines[line]:
+					self.cut_columns(my_lines[line], tr_lines[line], line)
+				else:
+					print(" " * 8, tr_lines[line])
+		except IndexError:
+			if len(my_lines) < len(tr_lines):
+				print("Missing lines for mine:")
+				for line in range(last_index, max_len_lines):
+					print(" " * 8, YELLOW + tr_lines[line] + RESET + " ")
+			else:
+				print("Excess lines for mine")
+				for line in range(max_len_lines):
+					print(" " * 8, YELLOW + my_lines[line] + RESET + " ")
+
+	def cut_columns(self, out1, out2, line_nb):
+		my_cols = out1.split(" ")
+		tr_cols = out2.split(" ")
+		if len(my_cols) < len(tr_cols):
+			print("Mine has", len(my_cols) - len(tr_cols), "cols missing")
+			max_len_cols = len(tr_cols)
+		elif len(my_cols) > len(tr_cols):
+			print("Mine has", len(tr_cols) - len(my_cols), "cols excess")
+			max_len_cols = len(my_cols)
+		else:
+			max_len_cols = len(my_cols)
+		err_my = ""
+		err_tr = ""
+		for col in range(max_len_cols):
+			try:
+				if my_cols[col] != tr_cols[col]:
+					err_my += RED + my_cols[col] + RESET + " "
+					err_tr += RED + tr_cols[col] + RESET + " "
+				else:
+					err_my += GREEN + my_cols[col] + RESET + " "
+					err_tr += GREEN + tr_cols[col] + RESET + " "
+			except IndexError:
+				if len(my_cols) < len(tr_cols):
+					err_tr += YELLOW + tr_cols[col] + RESET + " "
+				else:
+					err_my += YELLOW + my_cols[col] + RESET + " "
+		if err_my:
+			 print("{:<4d}my: ".format(line_nb), err_my)
+			 print("    tr: ", err_tr)
+		else:
+			 print("{:<4d}my: ".format(line_nb), out1)
+			 print("    tr: ", out2)
 
 	def diff_output(self, out1, out2):
 		col_type = {0 : "rights",
@@ -173,7 +272,7 @@ if __name__ == "__main__":
 	arguments = ['']#-l -R, '-t'
 	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights"]
 	# folders = ["tests/dates"]
-	test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
+	test = Comparator("./ft_ls -laR", "LANG=C ls -laR", arguments, folders)
 	test.pipeline()
 	# test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	# test.pipeline()
