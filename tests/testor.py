@@ -114,6 +114,7 @@ class Comparator():
 				os_dic = 1
 			for word, initial in month_dic.items():
 				 out1 = out1.replace(word, initial[os_dic])
+				 out2 = out2.replace(word, initial[os_dic])
 			# self.diff_output(out1, out2)
 			self.cut_folders(out1, out2)
 			print()
@@ -270,7 +271,7 @@ class Comparator():
 
 if __name__ == "__main__":
 	arguments = ['']#-l -R, '-t'
-	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights"]
+	folders = [".", "tests", "tests/types", "tests/dates", "tests/rights", "~"]
 	# folders = ["tests/dates"]
 	test = Comparator("./ft_ls -laR", "LANG=C ls -laR", arguments, folders)
 	test.pipeline()
