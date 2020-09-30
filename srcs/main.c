@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/28 16:37:46 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 11:23:05 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		main(int ac, char **av)
 	t_sys_files	*file;
 
 	file = NULL;
+	*(switch_garbage()) = FALSE;
 	init_options_and_arguments();
 	if (parse_args(ac, av) == FAILURE)
 		return (0);
@@ -45,5 +46,7 @@ int		main(int ac, char **av)
 		file = file_struct(DEFAULT_ARGUMENT, NULL);
 	if (file)
 		one_level(file);
+	free_file_struct((void**)&file);
+	parse_free();
 	return (0);
 }

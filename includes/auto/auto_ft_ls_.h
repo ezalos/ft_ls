@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 10:52:28 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 10:52:28 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/30 10:46:07 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/30 10:46:07 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void		create_random(t_arena *arena, int *row, int *col);
 void		fill_random(t_arena *arena, t_coor *coor, char type);
 void		print_file_type(struct stat sb);
 int		extended_attr(t_sys_files *file, uint8_t print);
+int		extended_attr(t_sys_files *file, uint8_t print);
 void		print_file_mode(struct stat sb, t_sys_files *file);
 int		print_ls(t_rbt *node);
 int		print_ls_l(t_rbt *node);
@@ -61,6 +62,7 @@ void		print_file_link_count(struct stat sb);
 int		recursive(t_rbt *node);
 int		one_level(t_sys_files *unix_file);
 t_sys_files		*file_struct(char *name, t_sys_files *parent);
+void		free_file_struct(void **content);
 t_rbt		*list_files(t_sys_files *daddy);
 
 #endif

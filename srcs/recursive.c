@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:47:22 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 17:45:43 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 12:52:18 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int		one_level(t_sys_files *unix_file)
 		ls_output(node);
 		if (parse_get("recursive") && !unix_file->empty_folder_case)
 			tree_inorder(node, &recursive);
-		//TODO: free all
+		if (!unix_file->empty_folder_case)
+			tree_free(node, free_file_struct);
+		else
+			ft_memdel((void**)&node);
 	}
 	return (1);
 }

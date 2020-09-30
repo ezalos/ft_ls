@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/29 17:41:26 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 11:10:58 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,22 @@ t_sys_files				*file_struct(char *name, t_sys_files *parent)
 		update_format(sys, &parent->format);
 	return (sys);
 }
+
+void					free_file_struct(void **content)
+{
+	t_sys_files			*file;
+
+	file = *content;
+	if (file)
+	{
+		ft_memdel((void**)&file->d_name);//invalid read of 8
+		ft_memdel((void**)&file->path);//invalid read of 8
+		ft_memdel((void**)&file->name_lowercase);//invalid read of 8
+		ft_memdel((void**)&file->path);//invalid read of 8
+		ft_memdel((void**)content);//invalid free
+	}
+}
+
 
 static t_rbt			*file_routine(t_sys_files *daddy, t_rbt *node,
 							struct dirent *file_infos)

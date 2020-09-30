@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:58 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 10:50:04 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 10:25:16 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,10 @@ void	print_file_last_modif(struct stat sb)
 		ft_printf(" %04s ", time_dic[TIMESTR_YEA]);
 	else
 		ft_printf("%.5s ", time_dic[TIMESTR_HOU]);
+	i = -1;
+	while (time_dic[++i] != NULL)
+		ft_memdel((void**)&time_dic[i]);
+	ft_memdel((void**)&time_dic[i]);
+	ft_memdel((void**)&time_dic);
+
 }
