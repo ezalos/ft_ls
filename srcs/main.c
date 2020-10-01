@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/10/01 18:33:09 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 21:45:51 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	init_options_and_arguments(void)
 {
-	parse_new("ls", PROGRAME_DESCRIPTION);
+	parse_new("ls", "List information about the FILEs (the current directory\
+by default). Sort entries alphabetically by default.");
 	parse_add_option('R', "recursive", "Recursively visit each directory");
 	parse_add_option('r', "reverse", "Reverse sort order");
 	parse_add_option('l', "list", "List file information");
@@ -23,8 +24,8 @@ void	init_options_and_arguments(void)
 	parse_add_option('s', "human-size", "Display sizes with units");
 	parse_add_option('g', "game", "Launch a game of snake ;)");
 	parse_add_option('h', "help", "Display Usage (this message)");
-	parse_add_arg("PATH", "List sorted information about the content of the \
-directory. Default PATH is current directory.");
+	parse_add_arg("PATH", "Folder or File to list information from. \
+Default is current directory");
 }
 
 void	ls_multi_path(int ac, char **av)
@@ -50,7 +51,6 @@ void	ls_multi_path(int ac, char **av)
 			if (file)
 				one_level(file);
 			i++;
-			// free_file_struct((void**)&file);
 		}
 	}
 }

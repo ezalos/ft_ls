@@ -6,13 +6,13 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:58 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/30 10:25:16 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 21:11:14 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
 
-int		check_file_time(time_t file_time)
+int				check_file_time(time_t file_time)
 {
 	static time_t	now;
 	long long		old_file;
@@ -35,18 +35,8 @@ int		check_file_time(time_t file_time)
 	return (FALSE);
 }
 
-void	print_file_last_modif(struct stat sb)
+static void		print_time_dic(struct stat sb, char **time_dic)
 {
-	char	*no_newline;
-	char	**time_dic;
-	int		i;
-
-	no_newline = ctime(&sb.st_mtime);
-	i = -1;
-	while (no_newline[++i])
-		if (no_newline[i] == '\n')
-			no_newline[i] = ' ';
-	time_dic = ft_strsplit(no_newline, ' ');
 	if (OS_IS_LINUX)
 	{
 		ft_printf("%-5s ", time_dic[TIMESTR_MON], time_dic[TIMESTR_DAY]);
@@ -61,10 +51,24 @@ void	print_file_last_modif(struct stat sb)
 		ft_printf(" %04s ", time_dic[TIMESTR_YEA]);
 	else
 		ft_printf("%.5s ", time_dic[TIMESTR_HOU]);
+}
+
+void			print_file_last_modif(struct stat sb)
+{
+	char			*no_newline;
+	char			**time_dic;
+	int				i;
+
+	no_newline = ctime(&sb.st_mtime);
+	i = -1;
+	while (no_newline[++i])
+		if (no_newline[i] == '\n')
+			no_newline[i] = ' ';
+	time_dic = ft_strsplit(no_newline, ' ');
+	print_time_dic(sb, time_dic);
 	i = -1;
 	while (time_dic[++i] != NULL)
 		ft_memdel((void**)&time_dic[i]);
 	ft_memdel((void**)&time_dic[i]);
 	ft_memdel((void**)&time_dic);
-
 }

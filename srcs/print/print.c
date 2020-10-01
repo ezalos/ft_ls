@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 18:52:44 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 21:17:04 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ int		print_ls_l(t_rbt *node)
 	return (0);
 }
 
-
-
-void	ls_output(t_rbt *node)
+void	ls_print_path(t_rbt *node)
 {
 	t_sys_files	*file;
 
@@ -73,21 +71,35 @@ void	ls_output(t_rbt *node)
 		else if (file->empty_folder_case)
 			ft_printf("%s:\n", file->path);
 	}
-	if (parse_get("list"))
+}
+
+void	ls_output_list(t_rbt *node)
+{
+	t_sys_files	*file;
+
+	file = node->content;
+	if (file->parent)
+		get_format(&file->parent->format, 0);
+	if (!file->lonely_file || (file->empty_folder_case && OS_IS_LINUX))
+		print_folder_size(node);
+	if (!file->empty_folder_case)
 	{
-		if (file->parent)
-			get_format(&file->parent->format, 0);
-		if (!file->lonely_file || (file->empty_folder_case && OS_IS_LINUX))
-			print_folder_size(node);
-		if (!file->empty_folder_case)
-		{
-			if (!parse_get("reverse"))
-				tree_inorder(node, &print_ls_l);
-			else
-				tree_inrorder(node, &print_ls_l);
-		}
-		get_format(NULL, -1);
+		if (!parse_get("reverse"))
+			tree_inorder(node, &print_ls_l);
+		else
+			tree_inrorder(node, &print_ls_l);
 	}
+	get_format(NULL, -1);
+}
+
+void	ls_output(t_rbt *node)
+{
+	t_sys_files	*file;
+
+	file = node->content;
+	ls_print_path(node);
+	if (parse_get("list"))
+		ls_output_list(node);
 	else
 	{
 		if (!file->empty_folder_case)

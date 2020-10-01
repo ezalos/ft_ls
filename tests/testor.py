@@ -14,7 +14,7 @@ UNDERLINE = '\033[4m'
 
 month_dic = {
 	"Jan" : ["janv.", "jan"],
-	"Feb" : ["févr" , "fév"],
+	"Feb" : ["févr." , "fév"],
 	"Mar" : ["mars" , "mar"],
 	"Apr" : ["avril", "avr"],
 	"May" : ["mai"  , "mai"],
@@ -48,11 +48,11 @@ class BinCute():
 			print("Wrong args tyoe: ", type(args))
 
 	def launch(self):
-		  t = time.clock()
+		  t = time.process_time()
 		  # print(self.command)
 		  self.raw_output = subprocess.run(self.command, stdout=subprocess.PIPE,
 										  stderr=subprocess.PIPE, shell=True)
-		  self.time = time.clock() - t
+		  self.time = time.process_time() - t
 		  self.stdout = self.raw_output.stdout.decode('utf-8')
 		  self.stderr = self.raw_output.stderr.decode('utf-8')
 
@@ -281,7 +281,7 @@ class Comparator():
 
 if __name__ == "__main__":
 	arguments = ['', '-a']#-l -R, '-t'
-	folders = [".", "/dev"]
+	folders = ["~"]
 	# folders = ["/"]
 	test = Comparator("./ft_ls -lR", "LANG=C ls -lR", arguments, folders)
 	test.pipeline()

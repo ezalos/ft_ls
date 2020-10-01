@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:03 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 17:47:36 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 21:08:49 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,28 +90,27 @@ int		extended_attr(t_sys_files *file, uint8_t print)
 
 void	print_file_mode(struct stat sb, t_sys_files *file)
 {
-	int mode;
 	int i;
 
-	mode = sb.st_mode;
 	i = 3 * 3;
 	while (i > 0)
 	{
 		i -= 3;
-		if (4 & (mode >> i))
+		if (4 & (sb.st_mode >> i))
 			ft_printf("r");
 		else
 			ft_printf("-");
-		if (2 & (mode >> i))
+		if (2 & (sb.st_mode >> i))
 			ft_printf("w");
 		else
 			ft_printf("-");
-		if ((i == 6 && mode & S_ISUID) || (i == 3 && mode & S_ISGID))
-			ft_printf("%c", (1 & (mode >> i)) ? 's' : 'S');
-		else if (i == 0 && mode & S_ISVTX)
-			ft_printf("%c", (1 & (mode >> i)) ? 't' : 'T');
+		if ((i == 6 && sb.st_mode & S_ISUID)
+		|| (i == 3 && sb.st_mode & S_ISGID))
+			ft_printf("%c", (1 & (sb.st_mode >> i)) ? 's' : 'S');
+		else if (i == 0 && sb.st_mode & S_ISVTX)
+			ft_printf("%c", (1 & (sb.st_mode >> i)) ? 't' : 'T');
 		else
-			ft_printf("%c", (1 & (mode >> i)) ? 'x' : '-');
+			ft_printf("%c", (1 & (sb.st_mode >> i)) ? 'x' : '-');
 	}
 	if (!extended_attr(file, TRUE))
 		ft_printf("%*s", get_format(NULL, FORMAT_RIGHTS), "");
