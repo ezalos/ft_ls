@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezalos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/30 10:46:07 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/30 10:46:07 by ezalos           ###   ########.fr       */
+/*   Created: 2020/09/30 16:17:22 by ezalos            #+#    #+#             */
+/*   Updated: 2020/09/30 16:17:22 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int		sort_files_alpha(void *one, void *two);
 int		sort_files_alpha(void *one, void *two);
 int		sort_files_time(void *one, void *two);
 void		init_options_and_arguments(void);
+void		ls_multi_path(int ac, char**av);
 int		main(int ac, char **av);
 void		play_game(t_arena *arena);
 int		snake(void);

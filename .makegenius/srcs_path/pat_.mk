@@ -1,5 +1,4 @@
 PAT += 	srcs/print/print_5_name.c \
-	srcs/main.c \
 	srcs/snake/snake.c \
 	srcs/snake/snk_init.c \
 	srcs/snake/snk_utils.c \
@@ -16,5 +15,6 @@ PAT += 	srcs/print/print_5_name.c \
 	srcs/print/print.c \
 	srcs/print/print_0_rights.c \
 	srcs/print/print_4_time.c \
-	srcs/files.c \
-	srcs/recursive.c 
+	srcs/main.c \
+	srcs/recursive.c \
+	srcs/files.c 

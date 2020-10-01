@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:50:34 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 10:37:43 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 22:03:11 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int					get_format(t_ls_format *new_format, int field)
 	static t_ls_format	*format;
 	int					value;
 
-	if (new_format)
+	if (new_format || field == -1)
 		format = new_format;
 	value = 0;
 	if (format && field >= 0 && field <= 6)

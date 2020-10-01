@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:47:22 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/30 13:12:27 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 22:24:15 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		one_level(t_sys_files *unix_file)
 		if ((!node && (unix_file->check != IS_CURRENT_DIR)))
 			unix_file->empty_folder_case = 1;
 	}
-	if ((!node && unix_file->empty_folder_case)
+	if ((!node && unix_file->empty_folder_case && unix_file->open_denied == FALSE)
 	|| (unix_file->parent == NULL && !IS_FILE_DIR(unix_file->statbuf)))
 	{
 		if (parse_get("time"))
@@ -45,7 +45,7 @@ int		one_level(t_sys_files *unix_file)
 	}
 	else if (!IS_FILE_DIR(unix_file->statbuf))
 		return (0);
-	if (node)
+	if (node && unix_file->open_denied == FALSE)
 	{
 		ls_output(node);
 		if (parse_get("recursive") && !unix_file->empty_folder_case)

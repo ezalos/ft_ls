@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/29 15:46:45 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/09/30 16:16:46 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef	struct			s_sys_files
 	char				*name_lowercase;
 	char				*path;
 	char				*d_name;
+	int					open_denied;
 	int					check;
 	int					key;
 	t_rbt				*content;
