@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/30 22:11:15 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 18:48:37 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void					free_file_struct(void **content)
 	}
 }
 
-
 static t_rbt			*file_routine(t_sys_files *daddy, t_rbt *node,
 							struct dirent *file_infos)
 {
@@ -119,8 +118,7 @@ t_rbt					*list_files(t_sys_files *daddy)
 	struct dirent	*file_infos;
 
 	node = NULL;
-	directory_infos = opendir(daddy->path);
-	if (directory_infos)
+	if ((directory_infos = opendir(daddy->path)) != NULL)
 	{
 		file_infos = readdir(directory_infos);
 		if (file_infos)

@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/30 16:16:46 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 18:23:05 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef	struct			s_sys_files
 	t_rbt				*content;
 	struct s_sys_files	*parent;
 	int					empty_folder_case;
+	int					lonely_file;
 
 }						t_sys_files;
 

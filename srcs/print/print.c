@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/30 22:28:46 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 18:52:44 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,15 @@ int		print_ls_l(t_rbt *node)
 	return (0);
 }
 
+
+
 void	ls_output(t_rbt *node)
 {
 	t_sys_files	*file;
 
 	file = node->content;
-	if (parse_get("recursive"))
+	if (parse_get("recursive")
+	|| (parse_get("PATH")->arg_place < parse_mem()->ac - 1))
 	{
 		if (file->parent)
 		{
@@ -74,7 +77,7 @@ void	ls_output(t_rbt *node)
 	{
 		if (file->parent)
 			get_format(&file->parent->format, 0);
-		if ((!file->empty_folder_case || (OS_IS_LINUX)) && IS_FILE_DIR(file->statbuf))
+		if (!file->lonely_file || (file->empty_folder_case && OS_IS_LINUX))
 			print_folder_size(node);
 		if (!file->empty_folder_case)
 		{

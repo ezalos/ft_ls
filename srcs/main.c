@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 13:36:45 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/09/30 22:12:03 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 18:33:09 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ void	init_options_and_arguments(void)
 directory. Default PATH is current directory.");
 }
 
-void	ls_multi_path(int ac, char**av)
+void	ls_multi_path(int ac, char **av)
 {
 	t_sys_files	*file;
 	int			i;
 
-	(void)ac;
 	file = NULL;
 	if (parse_get("PATH") == NULL)
 	{
@@ -51,9 +50,9 @@ void	ls_multi_path(int ac, char**av)
 			if (file)
 				one_level(file);
 			i++;
+			// free_file_struct((void**)&file);
 		}
 	}
-	// free_file_struct((void**)&file);
 }
 
 int		main(int ac, char **av)
