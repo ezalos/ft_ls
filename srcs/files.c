@@ -6,11 +6,16 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/10/01 21:12:45 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 22:00:38 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "head.h"
+
+int8_t					is_file_dir(struct stat sb)
+{
+	return (S_IFDIR == (sb.st_mode & S_IFMT) ? TRUE : FALSE);
+}
 
 static t_rbt			*file_routine(t_sys_files *daddy, t_rbt *node,
 							struct dirent *file_infos)

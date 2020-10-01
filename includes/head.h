@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 11:15:02 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/10/01 21:56:21 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 22:00:31 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@
 # elif __MACH__
 #  define MAGIC_NUMBER_ELF		0xfeedfacf
 # endif
-
-# define IS_FILE_DIR(sb)	(S_IFDIR == (sb.st_mode & S_IFMT) ? TRUE : FALSE)
 
 # define DEFAULT_ARGUMENT	"."
 # define ERROR_DIR_OPEN		"Error opening dir"

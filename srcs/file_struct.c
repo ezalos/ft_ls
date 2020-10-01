@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 21:12:40 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 21:12:44 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 22:01:18 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int				fill_name(t_sys_files *sys, char *name, char *path)
 
 static int				file_check(t_sys_files *sys, char *name)
 {
-	if (IS_FILE_DIR(sys->statbuf))
+	if (is_file_dir(sys->statbuf))
 	{
 		if ((!ft_strncmp(name, UP_DIR, UP_DIR_LEN)
 					&& name[UP_DIR_LEN] == '\0'))

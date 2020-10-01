@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 21:33:31 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 21:40:33 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/01 22:01:38 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int			sort_files_alpha(void *one, void *two);
 int			sort_files_time(void *one, void *two);
+int8_t		is_file_dir(struct stat sb);
 void		init_options_and_arguments(void);
 void		ls_multi_path(int ac, char **av);
 int			main(int ac, char **av);
