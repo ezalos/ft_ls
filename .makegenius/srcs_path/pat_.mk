@@ -9,13 +9,13 @@ PAT += 	srcs/print/print_5_name.c \
 	srcs/print/print_colors.c \
 	srcs/print/print_6_file_link.c \
 	srcs/print/print_1_nb_links.c \
-	srcs/print/print_3_sizes.c \
 	srcs/sorts.c \
 	srcs/print/format.c \
-	srcs/main.c \
 	srcs/print/print_0_rights.c \
 	srcs/print/print_4_time.c \
-	srcs/file_struct.c \
-	srcs/files.c \
 	srcs/print/print.c \
-	srcs/recursive.c 
+	srcs/main.c \
+	srcs/files.c \
+	srcs/recursive.c \
+	srcs/file_struct.c \
+	srcs/print/print_3_sizes.c 

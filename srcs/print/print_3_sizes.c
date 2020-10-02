@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:49:16 by ezalos            #+#    #+#             */
-/*   Updated: 2020/09/29 16:48:15 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/02 16:51:42 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void			print_file_size(size_t file_size, uint8_t format)
 	print_human_size(size, save);
 }
 
-long long		tree_sum_size_inorder(t_rbt *root)
+intmax_t		tree_sum_size_inorder(t_rbt *root)
 {
-	long long	value;
+	intmax_t	value;
 
 	value = 0;
 	if (root != NULL)
@@ -70,7 +70,7 @@ long long		tree_sum_size_inorder(t_rbt *root)
 
 void			print_folder_size(t_rbt *node)
 {
-	long long	sum;
+	intmax_t	sum;
 
 	sum = tree_inorder_long_long(node, &tree_sum_size_inorder);
 	ft_printf("total ");
