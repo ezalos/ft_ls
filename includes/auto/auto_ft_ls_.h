@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 16:51:48 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/02 17:00:56 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/03 16:16:30 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,5 @@ int				sort_files_time(void *one, void *two);
 intmax_t		tree_sum_size_inorder(t_rbt *root);
 void			update_format(t_sys_files *file, t_ls_format *format);
 void			update_format_ug(t_sys_files *file, t_ls_format *format);
-
-
-
 
 #endif

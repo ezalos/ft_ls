@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 09:47:22 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/03 13:40:47 by ldevelle         ###   ########.fr       */
+/*   Updated: 2020/10/03 16:16:44 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,18 @@ int			recursive(t_rbt *node)
 
 void		free_memory(t_sys_files *unix_file, t_rbt *node, int8_t to_free)
 {
-	//ft_printf("%s\n", unix_file->d_name);
 	if (node && !(unix_file->empty_folder_case && unix_file->parent))
 	{
-		//ft_printf("Tree free\n", unix_file->d_name);
 		tree_free(node, free_file_struct);
 	}
 	else if (node)
 	{
-		//ft_printf("Node free\n", unix_file->d_name);
 		ft_memdel((void**)&node);
 		node = (void*)1;
 	}
 	if ((!node || to_free)
 	&& (unix_file->open_denied == FALSE || !unix_file->parent))
 	{
-		//ft_printf("File struct free\n", unix_file->d_name);
 		free_file_struct((void**)&unix_file);
 	}
 }

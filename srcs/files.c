@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/10/03 13:44:03 by ldevelle         ###   ########.fr       */
+/*   Updated: 2020/10/03 16:18:15 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ t_rbt					*list_files(t_sys_files *daddy)
 	node = NULL;
 	if ((directory_infos = opendir(daddy->path)) != NULL)
 	{
-		file_infos = readdir(directory_infos);
-		if (file_infos)
+		if ((file_infos = readdir(directory_infos)) != NULL)
 			while (file_infos)
 			{
 				node = file_routine(daddy, node, file_infos);
