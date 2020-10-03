@@ -6,7 +6,7 @@
 /*   By: ldevelle <ldevelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 19:50:20 by ldevelle          #+#    #+#             */
-/*   Updated: 2020/10/01 22:00:38 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/03 13:44:03 by ldevelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_rbt					*list_files(t_sys_files *daddy)
 	}
 	else
 	{
+		ft_printf("\n%s:\n", daddy->path);
 		perror(ERROR_DIR_OPEN);
 		daddy->open_denied = TRUE;
 	}

@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 21:12:40 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 22:01:18 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/03 13:40:24 by ldevelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void					free_file_struct(void **content)
 	file = *content;
 	if (file)
 	{
+		//ft_printf("free in fs %s\n", file->d_name);
 		ft_memdel((void**)&file->d_name);
 		ft_memdel((void**)&file->path);
 		ft_memdel((void**)&file->name_lowercase);
