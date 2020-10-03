@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 19:19:42 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 21:17:04 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/03 17:31:55 by ezalos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	ls_print_path(t_rbt *node)
 	t_sys_files	*file;
 
 	file = node->content;
-	if (parse_get("recursive")
-	|| (parse_get("PATH")->arg_place < parse_mem()->ac - 1))
+	if (parse_get("recursive") || (parse_get("PATH")
+	&& (parse_get("PATH")->arg_place < parse_mem()->ac - 1)))
 	{
 		if (file->parent)
 		{
