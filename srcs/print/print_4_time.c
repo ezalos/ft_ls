@@ -6,7 +6,7 @@
 /*   By: ezalos <ezalos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 19:53:58 by ezalos            #+#    #+#             */
-/*   Updated: 2020/10/01 21:11:14 by ezalos           ###   ########.fr       */
+/*   Updated: 2020/10/14 13:50:04 by ldevelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,13 @@ void			print_file_last_modif(struct stat sb)
 		if (no_newline[i] == '\n')
 			no_newline[i] = ' ';
 	time_dic = ft_strsplit(no_newline, ' ');
-	print_time_dic(sb, time_dic);
-	i = -1;
-	while (time_dic[++i] != NULL)
+	if (time_dic != NULL)
+	{
+		print_time_dic(sb, time_dic);
+		i = -1;
+		while (time_dic[++i] != NULL)
+			ft_memdel((void**)&time_dic[i]);
 		ft_memdel((void**)&time_dic[i]);
-	ft_memdel((void**)&time_dic[i]);
-	ft_memdel((void**)&time_dic);
+		ft_memdel((void**)&time_dic);
+	}
 }
